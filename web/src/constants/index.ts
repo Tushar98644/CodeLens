@@ -16,9 +16,4 @@ export const SIDEBAR_ITEMS = [
         icon: Settings,
         route: "/settings"
     },
-    {
-        title: "Integrations",
-        icon: Puzzle,
-        route: "/integrations"
-    }
 ]

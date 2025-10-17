@@ -10,7 +10,7 @@ const SideBar = () => {
     const pathname = usePathname();
     return (
         <div className="h-full border-r-1 border-r-neutral-800 p-4 flex flex-col">
-            <div id="sidebar-icon" className="py-4 pb-8 px-4 flex flex-row gap-3">
+            <div id="sidebar-icon" className="py-4 pb-8 px-2 flex flex-row gap-3">
                 <Icons.logo className="h-7 w-7 hover:animate-pulse" />
                 <span className="font-semibold">Code Lens</span>
             </div>
@@ -21,7 +21,7 @@ const SideBar = () => {
                         const isActive = item.route === pathname;
                         
                         return (
-                            <Link className={`w-full pl-4 rounded-lg flex flex-row gap-3 items-center py-[9px] text-[15px] hover:bg-zinc-900 ${isActive ? "bg-zinc-800 text-white" : "text-neutral-400"}`} href={item.route} key={index}>
+                            <Link className={`w-full pl-4 rounded-lg flex flex-row gap-3 items-center py-[8.5px] text-[14px] hover:bg-zinc-900 ${isActive ? "bg-zinc-800 text-white" : "text-neutral-400"}`} href={item.route} key={index}>
                                 <Icon size={19} />
                                 <span id="items-title">{item.title}</span>
                             </Link>
