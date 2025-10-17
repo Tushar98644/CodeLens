@@ -6,6 +6,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "scripts": {
+    "dev": "npx @langchain/langgraph-cli dev --port 8123 --no-browser"
+  },
   "devDependencies": {
     "@types/html-to-text": "^9.0.4",
     "@types/node": "^22.9.0",

@@ -1,7 +1,8 @@
 'use client'
 
 import { SIDEBAR_ITEMS } from "@/constants";
-import { Newspaper } from "lucide-react";
+import { Icons } from "@/features/global/icons";
+import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -9,8 +10,9 @@ const SideBar = () => {
     const pathname = usePathname();
     return (
         <div className="h-full border-r-1 border-r-neutral-800 p-4 flex flex-col">
-            <div id="sidebar-icon" className="py-4 pb-8 px-4 hover:animate-bounce">
-                <Newspaper size={28} />
+            <div id="sidebar-icon" className="py-4 pb-8 px-4 flex flex-row gap-3">
+                <Icons.logo className="h-7 w-7 hover:animate-pulse" />
+                <span className="font-semibold">Code Lens</span>
             </div>
             <div id="sidebar-items" className="flex flex-col gap-1">
                 {
@@ -28,7 +30,7 @@ const SideBar = () => {
                 }
             </div>
             <div id="user-button" className="flex mt-auto">
-                <button>Logout</button>
+                <UserButton />
             </div>
         </div>
     );

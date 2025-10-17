@@ -100,29 +100,29 @@ jobs:
           }
         shell: pwsh
 
-  notify-slack:
-    name: Notify Slack on Failure
-    runs-on: ubuntu-latest
-    needs: smoke
-    if: |
-      failure() && 
-      github.event_name == 'schedule'
-    steps:
-      - name: Notify Slack
-        uses: slackapi/slack-github-action@v2.1.0
-        with:
-          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
-          webhook-type: incoming-webhook
-          payload: |
-            {
-              "text": ":warning: *Smoke test failed for `with-langgraph-js` :warning:.*",
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": ":warning: *Smoke test failed for <https://github.com/copilotkit/with-langgraph-js|with-langgraph-js> :warning:*\n\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View run details>"
-                  }
-                }
-              ]
-            }
+  # notify-slack:
+  #   name: Notify Slack on Failure
+  #   runs-on: ubuntu-latest
+  #   needs: smoke
+  #   if: |
+  #     failure() && 
+  #     github.event_name == 'schedule'
+  #   steps:
+  #     - name: Notify Slack
+  #       uses: slackapi/slack-github-action@v2.1.0
+  #       with:
+  #         webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+  #         webhook-type: incoming-webhook
+  #         payload: |
+  #           {
+  #             "text": ":warning: *Smoke test failed for `with-langgraph-js` :warning:.*",
+  #             "blocks": [
+  #               {
+  #                 "type": "section",
+  #                 "text": {
+  #                   "type": "mrkdwn",
+  #                   "text": ":warning: *Smoke test failed for <https://github.com/copilotkit/with-langgraph-js|with-langgraph-js> :warning:*\n\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View run details>"
+  #                 }
+  #               }
+  #             ]
+  #           }
