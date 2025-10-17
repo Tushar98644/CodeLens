@@ -1,0 +1,37 @@
+'use client'
+
+import { SIDEBAR_ITEMS } from "@/constants";
+import { Newspaper } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+const SideBar = () => {
+    const pathname = usePathname();
+    return (
+        <div className="h-full border-r-1 border-r-neutral-800 p-4 flex flex-col">
+            <div id="sidebar-icon" className="py-4 pb-8 px-4 hover:animate-bounce">
+                <Newspaper size={28} />
+            </div>
+            <div id="sidebar-items" className="flex flex-col gap-1">
+                {
+                    SIDEBAR_ITEMS.map((item, index) => {
+                        const Icon = item.icon;
+                        const isActive = item.route === pathname;
+                        
+                        return (
+                            <Link className={`w-full pl-4 rounded-lg flex flex-row gap-3 items-center py-[9px] text-[15px] hover:bg-zinc-900 ${isActive ? "bg-zinc-800 text-white" : "text-neutral-400"}`} href={item.route} key={index}>
+                                <Icon size={19} />
+                                <span id="items-title">{item.title}</span>
+                            </Link>
+                        )
+                    })
+                }
+            </div>
+            <div id="user-button" className="flex mt-auto">
+                <button>Logout</button>
+            </div>
+        </div>
+    );
+}
+
+export default SideBar;
