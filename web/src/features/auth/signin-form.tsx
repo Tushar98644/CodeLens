@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { Icons } from "@/features/global/icons";
+import { authClient } from "@/lib/auth-client";
 
 export function SignInForm() {
   const [loadingProvider, setLoadingProvider] = useState<"google" | "github" | null>(null);
@@ -12,6 +13,11 @@ export function SignInForm() {
     setLoadingProvider(provider);
 
     console.log(`Initiating sign-in with ${provider}...`);
+    await authClient.signIn.social({
+      provider: provider,
+      callbackURL: '/dashboard',
+      newUserCallbackURL: "/dashboard",
+    })
     setLoadingProvider(null);
   };
 
