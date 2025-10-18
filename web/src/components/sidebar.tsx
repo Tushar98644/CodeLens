@@ -2,19 +2,29 @@
 
 import { SIDEBAR_ITEMS } from "@/constants";
 import { Icons } from "@/features/global/icons";
-import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import ProfileDropdown from "./ui/profile-dropdown";
+import { authClient } from "@/lib/auth-client";
 
 const SideBar = () => {
     const pathname = usePathname();
+    const { data: session } = authClient.useSession();
+    const user = session?.user;
+
+    const userData = {
+        name: user?.name as string,
+        email: user?.email as string,
+        avatar: user?.image as string,
+    }
+
     return (
-        <div className="h-full border-r-1 border-r-neutral-800 p-4 flex flex-col">
-            <div id="sidebar-icon" className="py-4 pb-8 px-2 flex flex-row gap-3">
+        <div className="h-full border-r-1 border-r-neutral-800 flex flex-col">
+            <div id="sidebar-icon" className="py-8 pb-4 px-6 flex flex-row gap-3">
                 <Icons.logo className="h-7 w-7 hover:animate-pulse" />
                 <span className="font-semibold">Code Lens</span>
             </div>
-            <div id="sidebar-items" className="flex flex-col gap-1">
+            <div id="sidebar-items" className="flex flex-col gap-1 p-4">
                 {
                     SIDEBAR_ITEMS.map((item, index) => {
                         const Icon = item.icon;
@@ -29,8 +39,8 @@ const SideBar = () => {
                     })
                 }
             </div>
-            <div id="user-button" className="flex mt-auto">
-                <UserButton />
+            <div id="user-button" className="flex mt-auto p-2">
+                <ProfileDropdown data={userData}/>
             </div>
         </div>
     );

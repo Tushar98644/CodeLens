@@ -9,7 +9,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
             <CopilotKit runtimeUrl="/api/copilotkit" agent="starterAgent">
                 <ThemeProvider
                     attribute="class"
-                    defaultTheme="system"
+                    defaultTheme="light"
                     enableSystem
                     disableTransitionOnChange
                 >

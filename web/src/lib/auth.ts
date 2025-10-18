@@ -4,6 +4,12 @@ import { db } from "@/db";
 import * as schema from "@/db/schema/auth"; 
 
 export const auth = betterAuth({
+  account: {
+        accountLinking: {
+            allowDifferentEmails: true,
+            updateUserInfoOnLink: true
+        }
+  },
   database: drizzleAdapter(db, {
     provider: "pg",
     schema: {
