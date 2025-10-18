@@ -21,7 +21,7 @@ const SideBar = () => {
                         const isActive = item.route === pathname;
                         
                         return (
-                            <Link className={`w-full pl-4 rounded-lg flex flex-row gap-3 items-center py-[8.5px] text-[14px] hover:bg-zinc-900 ${isActive ? "bg-zinc-800 text-white" : "text-neutral-400"}`} href={item.route} key={index}>
+                            <Link className={`w-full pl-4 rounded-lg flex flex-row gap-3 items-center py-[8.5px] text-[14px] hover:bg-zinc-900 hover:text-white ${isActive ? "bg-select text-[lab(68.2765%_26.5305_-86.0333)]" : "text-neutral-400"}`} href={item.route} key={index}>
                                 <Icon size={19} />
                                 <span id="items-title">{item.title}</span>
                             </Link>

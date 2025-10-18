@@ -9,7 +9,7 @@ export const SIDEBAR_ITEMS = [
     {
         title: "Api Keys",
         icon: KeyRound,
-        route: "/api-keys"
+        route: "/dashboard/configuration"
     },
     {
         title: "Settings",
