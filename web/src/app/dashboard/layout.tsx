@@ -6,7 +6,7 @@ const DashboardLayout = ({children}: {children: React.ReactNode}) => {
             <div className="col-span-1">
                 <SideBar />
             </div>
-            <div className="overflow-y-scroll col-span-5 p-4">
+            <div className="overflow-hidden col-span-5">
                 {children}
             </div>
         </div>
