@@ -11,6 +11,7 @@ import {
   EdgeChange,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
+import DownloadButton from './export-button';
 
 const initialNodes = [
   {
@@ -27,8 +28,12 @@ const initialNodes = [
 ];
 
 const initialEdges = [
-  { id: 'e1-2', source: 'n1', target: 'n2' },
+  { id: 'e1-2', source: 'n1', target: 'n2', animated: true, type: 'smoothstep' },
 ];
+
+const options = { 
+  hideAttribution: true
+}
 
 export const FlowCanvas = memo(() => {
   const [nodes, setNodes] = useState(initialNodes);
@@ -55,11 +60,14 @@ export const FlowCanvas = memo(() => {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        colorMode='dark'
+        proOptions={options}
         fitView
       >
-        <MiniMap nodeStrokeWidth={3}/>
+        <MiniMap nodeStrokeWidth={3} />
         <Background />
         <Controls />
+        <DownloadButton />
       </ReactFlow>
     </div>
   );

@@ -6,40 +6,51 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ProfileDropdown from "./ui/profile-dropdown";
 import { authClient } from "@/lib/auth-client";
+import { cn } from "@/lib/utils";
 
 const SideBar = () => {
     const pathname = usePathname();
     const { data: session } = authClient.useSession();
     const user = session?.user;
 
-    const userData = {
-        name: user?.name as string,
-        email: user?.email as string,
-        avatar: user?.image as string,
-    }
+    const userData = user ? {
+        name: user.name as string,
+        email: user.email as string,
+        avatar: user.image as string,
+    } : undefined;
 
     return (
-        <div className="h-full border-r-1 border-r-neutral-800 flex flex-col">
-            <div id="sidebar-icon" className="py-8 pb-4 px-6 flex flex-row gap-3">
+        <div className="h-full border-r border-neutral-200 dark:border-neutral-800 flex flex-col bg-white dark:bg-black">
+            <div className="py-8 pb-4 px-4 flex items-center justify-center md:justify-start md:px-6 gap-3">
                 <Icons.logo className="h-7 w-7 hover:animate-pulse" />
-                <span className="font-semibold">Code Lens</span>
+                <span className="font-semibold hidden md:inline">Code Lens</span>
             </div>
-            <div id="sidebar-items" className="flex flex-col gap-1 p-4">
-                {
-                    SIDEBAR_ITEMS.map((item, index) => {
-                        const Icon = item.icon;
-                        const isActive = item.route === pathname;
-                        
-                        return (
-                            <Link className={`w-full pl-4 rounded-lg flex flex-row gap-3 items-center py-[8.5px] text-[14px] hover:bg-zinc-900 hover:text-white ${isActive ? "bg-select text-[lab(68.2765%_26.5305_-86.0333)]" : "text-neutral-400"}`} href={item.route} key={index}>
-                                <Icon size={19} />
-                                <span id="items-title">{item.title}</span>
-                            </Link>
-                        )
-                    })
-                }
+
+            <div className="flex flex-col gap-1 p-2 md:p-4">
+                {SIDEBAR_ITEMS.map((item, index) => {
+                    const Icon = item.icon;
+                    const isActive = item.route === pathname;
+                    
+                    return (
+                        <Link
+                            href={item.route}
+                            key={index}
+                            className={cn(
+                                "w-full rounded-lg flex flex-row gap-3 items-center py-2.5 text-sm font-medium transition-colors duration-200",
+                                "justify-center md:justify-start px-3 md:pl-4",
+                                isActive
+                                    ? "bg-blue-50 text-blue-600 dark:bg-select dark:text-[lab(68.2765%_26.5305_-86.0333)]"
+                                    : "text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-zinc-900 dark:hover:text-white"
+                            )}
+                        >
+                            <Icon size={19} />
+                            <span className="hidden md:inline">{item.title}</span>
+                        </Link>
+                    )
+                })}
             </div>
-            <div id="user-button" className="flex mt-auto p-2">
+
+            <div className="mt-auto p-2">
                 <ProfileDropdown data={userData}/>
             </div>
         </div>
