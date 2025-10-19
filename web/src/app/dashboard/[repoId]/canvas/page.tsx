@@ -23,7 +23,7 @@ const DependencyDetective = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     return (
-        <div className="flex h-full w-full flex-col bg-neutral-50 dark:bg-black">
+        <div className="flex h-full w-full flex-col bg-neutral-50 dark:bg-black py-2">
             {/* Header/Toolbar */}
             <header className="flex h-16 shrink-0 items-center justify-between border-b border-neutral-200 dark:border-neutral-800 bg-white dark:bg-zinc-950 px-4">
                 <div className="flex items-center gap-4">
