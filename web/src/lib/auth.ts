@@ -1,14 +1,14 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "@/db";
-import * as schema from "@/db/schema/auth"; 
+import * as schema from "@/db/schema/auth";
 
 export const auth = betterAuth({
   account: {
-        accountLinking: {
-            allowDifferentEmails: true,
-            updateUserInfoOnLink: true
-        }
+    accountLinking: {
+      allowDifferentEmails: true,
+      updateUserInfoOnLink: true,
+    },
   },
   database: drizzleAdapter(db, {
     provider: "pg",
@@ -24,6 +24,7 @@ export const auth = betterAuth({
     github: {
       clientId: process.env.GITHUB_CLIENT_ID!,
       clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+      scope: ["repo"]
     },
   },
 });

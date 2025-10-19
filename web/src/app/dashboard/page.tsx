@@ -6,44 +6,47 @@ import { Search } from 'lucide-react';
 import { DashboardSkeleton } from '@/features/dashboard/skeleton';
 import { RepositoryCard } from '@/features/dashboard/repo-card';
 import { ConnectGitHubView } from '@/features/dashboard/connect-github';
-
-const MOCK_REPOS = [
-    { id: 1, title: 'Code Lens Pro', issueNumber: '#55', branch: 'main', avatar: 'https://avatars.githubusercontent.com/u/9919?s=40&v=4' },
-    { id: 2, title: 'Design System V2', issueNumber: '#102', branch: 'main', avatar: 'https://avatars.githubusercontent.com/u/1024025?s=40&v=4' },
-    { id: 3, title: 'API Service Refactor', issueNumber: '#89', branch: 'feat/new-auth', avatar: 'https://avatars.githubusercontent.com/u/9919?s=40&v=4' },
-    { id: 4, title: 'Documentation Site', issueNumber: '#21', branch: 'docs-update', avatar: 'https://avatars.githubusercontent.com/u/1024025?s=40&v=4' },
-    { id: 5, title: 'Mobile App POC', issueNumber: '#12', branch: 'main', avatar: 'https://avatars.githubusercontent.com/u/9919?s=40&v=4' },
-    { id: 6, title: 'E2E Testing Suite', issueNumber: '#76', branch: 'ci/playwright', avatar: 'https://avatars.githubusercontent.com/u/1024025?s=40&v=4' },
-];
+import { useRepoQuery } from '@/hooks/queries/useRepoQuery';
+import { authClient } from '@/lib/auth-client';
 
 export default function GitHubIntegrationPage() {
     const [accounts, setAccounts] = useState<any[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const [isLoading, setIsLoading] = useState(true);
+
+    const { data: repos, isPending, error } = useRepoQuery();
 
     useEffect(() => {
         const fetchAccounts = async () => {
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            setAccounts([{ providerId: 'github', accountId: 'user-123' }]);
-            setIsLoading(false);
-        };
+            try {
+                const { data: accountsList, error } = await authClient.listAccounts();
+                if (accountsList) {
+                    console.log('Accounts:', accountsList);
+                    setAccounts(accountsList);
+                }
+                if (error) {
+                    console.error('Failed to fetch accounts:', error);
+                }
+            } catch (error) {
+                console.error('Failed to fetch accounts:', error);
+            }
+        }
         fetchAccounts();
     }, []);
 
     const isConnected = !!accounts.find(acc => acc.providerId === 'github');
 
     const connectGitHub = async () => {
-        setIsLoading(true);
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        setAccounts([{ providerId: 'github', accountId: 'user-123' }]);
-        setIsLoading(false);
+        await authClient.linkSocial({
+            provider: "github",
+            callbackURL: '/dashboard'
+        })
     };
 
-    const filteredRepos = MOCK_REPOS.filter(repo =>
-        repo.title.toLowerCase().includes(searchQuery.toLowerCase())
+    const filteredRepos = repos?.filter((repo: any) =>
+        repo.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    if (isLoading) {
+    if (isPending) {
         return <DashboardSkeleton />;
     }
 
@@ -76,7 +79,7 @@ export default function GitHubIntegrationPage() {
 
             {/* --- Repository Grid --- */}
             <div className="overflow-y-auto grid grid-cols-1 md:grid-cols-3 gap-6 pt-6">
-                {filteredRepos.map(repo => (
+                {filteredRepos?.map((repo: any) => (
                     <RepositoryCard key={repo.id} repo={repo} />
                 ))}
             </div>
