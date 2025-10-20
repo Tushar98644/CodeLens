@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { GitFork, Star, Lock, Unlock, ExternalLink, BarChart3 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface Repo {
   name: string;
@@ -11,14 +12,18 @@ interface Repo {
   language: string | null;
   stargazers_count: number;
   forks_count: number;
+  default_branch: string;
   owner: {
     avatar_url: string;
+    login: string;
   };
 }
 
 export const RepositoryCard = ({ repo }: { repo: Repo }) => {
+    const router = useRouter();
+
     const handleAnalyze = () => {
-        console.log(`Analyzing repository: ${repo.name}`);
+        router.push(`/dashboard/analyze/${repo.owner.login}/${repo.name}/${repo.default_branch}`);
     };
 
     return (

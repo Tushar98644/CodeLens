@@ -6,14 +6,14 @@ import { Search } from 'lucide-react';
 import { DashboardSkeleton } from '@/features/dashboard/skeleton';
 import { RepositoryCard } from '@/features/dashboard/repo-card';
 import { ConnectGitHubView } from '@/features/dashboard/connect-github';
-import { useRepoQuery } from '@/hooks/queries/useRepoQuery';
+import { useReposQuery } from '@/hooks/queries/useRepoQuery';
 import { authClient } from '@/lib/auth-client';
 
 export default function GitHubIntegrationPage() {
     const [accounts, setAccounts] = useState<any[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
 
-    const { data: repos, isPending, error } = useRepoQuery();
+    const { data: repos, isPending, error } = useReposQuery();
 
     useEffect(() => {
         const fetchAccounts = async () => {

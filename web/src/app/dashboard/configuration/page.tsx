@@ -57,7 +57,7 @@ function ApiKeysContent() {
             {/* --- Header Section --- */}
             <header className="flex items-center justify-between pb-6">
                 <h1 className="text-3xl font-medium text-neutral-100">API Keys</h1>
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold">
+                <Button className="text-xs bg-neutral-100 dark:bg-[#1C212D] text-neutral-900 dark:text-blue-400 border border-neutral-200 dark:border-blue-500/20 font-semibold">
                     <Plus className="h-4 w-4 mr-2" />
                     Create API key
                 </Button>

@@ -1,36 +1,28 @@
-import { authClient } from "@/lib/auth-client";
 import { useQuery } from "@tanstack/react-query";
-import { Octokit } from "@octokit/rest";
+import axios from "axios";
 
-const fetchRepos = async () => {
- 
-  const { data } = await authClient.getAccessToken({
-    providerId: "github",
+export const useReposQuery = () => {
+  return useQuery({
+    queryKey: ["repos"],
+    queryFn: async () => {
+      const response = await axios.get(`/api/v1/repo`);
+      return response.data;
+    },
   });
-
-  const accessToken = data?.accessToken;
-
-  if (!accessToken) {
-    throw new Error("No access token found");
-  }
-
-  const octokit = new Octokit({ auth: accessToken });
-
-  const repos = await octokit.paginate(
-    octokit.rest.repos.listForAuthenticatedUser,
-    {
-      per_page: 100,
-      sort: "updated",
-      direction: "desc",
-    }
-  );
-
-  return repos;
 };
 
-export const useRepoQuery = () => {
+export const useFileTreeQuery = (owner?: string, repo?: string, branch?: string) => {
   return useQuery({
-    queryKey: ["repo"],
-    queryFn: () => fetchRepos(),
+    queryKey: ["repoTree", owner, repo, branch],
+    queryFn: async () => {
+      const response = await axios.post(`/api/v1/repo/tree`, {
+        owner,
+        repo,
+        branch,
+      });
+      return response.data;
+    },
+
+    enabled: !!owner && !!repo && !!branch,
   });
 };
