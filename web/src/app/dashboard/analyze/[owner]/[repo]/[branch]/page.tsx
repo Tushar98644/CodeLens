@@ -11,13 +11,12 @@ import { MessageSquare, Menu, X, Folder, File } from "lucide-react";
 import { useState, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { useFileTreeQuery } from "@/hooks/queries/useRepoQuery";
+import { useAnalysisQuery } from "@/hooks/queries/useAnalysisQuery";
 import { useParams } from "next/navigation";
 
 const buildTree = (files: { path: string }[]) => {
     const tree: Record<string, any> = {};
     if (!files) return tree;
-
-    console.log(`Building tree for files`, files);
 
     files.forEach(file => {
         const parts = file.path.split('/');
@@ -47,7 +46,7 @@ const RenderTreeNodes = ({ nodes, level = 0 }: { nodes: any, level?: number }) =
             </TreeNodeTrigger>
             {node.isDirectory && (
                 <TreeNodeContent hasChildren>
-                    <RenderTreeNodes nodes={node.children} level={level + 1}/>
+                    <RenderTreeNodes nodes={node.children} level={level + 1} />
                 </TreeNodeContent>
             )}
         </TreeNode>
@@ -55,12 +54,15 @@ const RenderTreeNodes = ({ nodes, level = 0 }: { nodes: any, level?: number }) =
 };
 
 export default function DependencyDetective() {
-    const { owner, repo, branch } = useParams<{ owner: string; repo: string; branch: string } >();
+    const { owner, repo, branch } = useParams<{ owner: string; repo: string; branch: string }>();
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
     const [showChat, setShowChat] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    
+
     const { data: files, isLoading, isError } = useFileTreeQuery(owner, repo, branch);
+
+    console.log(files);
+    // const { data, isPending } = useAnalysisQuery(owner, repo, files);
 
     const fileTree = useMemo(() => buildTree(files), [files]);
 
@@ -97,9 +99,9 @@ export default function DependencyDetective() {
                     {isLoading && <p className="p-4 text-sm text-neutral-400">Loading files...</p>}
                     {isError && <p className="p-4 text-sm text-red-500">Failed to load files.</p>}
                     {files && (
-                         <TreeProvider onSelectionChange={(ids) => setSelectedFile(ids[0] || null)} selectedIds={selectedFile ? [selectedFile] : []}>
+                        <TreeProvider onSelectionChange={(ids) => setSelectedFile(ids[0] || null)} selectedIds={selectedFile ? [selectedFile] : []}>
                             <TreeView className="p-2">
-                                <RenderTreeNodes nodes={fileTree} level={0}/>
+                                <RenderTreeNodes nodes={fileTree} level={0} />
                             </TreeView>
                         </TreeProvider>
                     )}

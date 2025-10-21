@@ -37,8 +37,6 @@ async function chat_node(state: AgentState, config: RunnableConfig) {
     apiKey: process.env.GEMINI_API_KEY!
   })
 
-  // 5.2 Bind the tools to the model, include CopilotKit actions. This allows
-  //     the model to call tools that are defined in CopilotKit by the frontend.
   const modelWithTools = model.bindTools!(
     [
       ...convertActionsToDynamicStructuredTools(state.copilotkit?.actions ?? []),
@@ -46,33 +44,24 @@ async function chat_node(state: AgentState, config: RunnableConfig) {
     ],
   );
 
-  // 5.3 Define the system message, which will be used to guide the model, in this case
-  //     we also add in the language to use from the state.
   const systemMessage = new SystemMessage({
     content: `You are a helpful assistant. The current proverbs are ${JSON.stringify(state.proverbs)}.`,
   });
 
-  // 5.4 Invoke the model with the system message and the messages in the state
   const response = await modelWithTools.invoke(
     [systemMessage, ...state.messages],
     config
   );
 
-  // 5.5 Return the response, which will be added to the state
   return {
     messages: response,
   };
 }
 
-// 6. Define the function that determines whether to continue or not,
-//    this is used to determine the next node to run
 function shouldContinue({ messages, copilotkit }: AgentState) {
-  // 6.1 Get the last message from the state
   const lastMessage = messages[messages.length - 1] as AIMessage;
 
-  // 7.2 If the LLM makes a tool call, then we route to the "tools" node
   if (lastMessage.tool_calls?.length) {
-    // Actions are the frontend tools coming from CopilotKit
     const actions = copilotkit?.actions;
     const toolCallName = lastMessage.tool_calls![0].name;
 
