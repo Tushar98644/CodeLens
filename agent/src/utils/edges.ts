@@ -15,3 +15,11 @@ export function shouldContinue({ messages, copilotkit }: AgentState) {
 
   return "__end__";
 }
+
+export function routeEntry(state: AgentState): string {
+  if (!state.graph_data || state.graph_data.nodes.length === 0) {
+    return "analyze";
+  }
+  
+  return "chat";
+}
