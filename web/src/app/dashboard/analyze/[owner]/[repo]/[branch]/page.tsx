@@ -62,7 +62,7 @@ export default function DependencyDetective() {
     const { data: files, isLoading, isError } = useFileTreeQuery(owner, repo, branch);
 
     console.log(files);
-    // const { data, isPending } = useAnalysisQuery(owner, repo, files);
+    const { data, isPending } = useAnalysisQuery(owner, repo, files);
 
     const fileTree = useMemo(() => buildTree(files), [files]);
 

@@ -27,7 +27,7 @@ export function SignInForm() {
     <div className="flex w-full flex-col items-center gap-y-8">
       <div className="text-center">
         <h2 className="text-2xl font-medium tracking-tight">
-          Sign in to Kairo
+          Sign in to Code Lens
         </h2>
         <p className="mt-1 text-muted-foreground">
           Welcome back! Please sign in to continue.

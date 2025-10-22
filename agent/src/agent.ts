@@ -18,8 +18,10 @@ const workflow = new StateGraph(AgentStateAnnotation)
     analyze: "analyze",
     chat: "chat",
   })
+  
   .addEdge("analyze", "build_edges")
-  .addEdge("build_edges", "chat")
+  .addEdge("build_edges", END)
+
   .addConditionalEdges("chat", shouldContinue, {
     tools: "tools",
     [END]: END,

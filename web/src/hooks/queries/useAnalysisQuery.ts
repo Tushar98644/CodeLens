@@ -20,5 +20,7 @@ export const useAnalysisQuery = (owner: string, repo: string, files: any) => {
   return useQuery({
     queryKey: ["repoAnalysis", owner, repo, files],
     queryFn: () => analyzeRepository({ owner, repo, files }),
+    staleTime: 1000 * 60 * 5,
+    enabled: !!owner && !!repo && !!files,
   });
 };

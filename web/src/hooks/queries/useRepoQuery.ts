@@ -22,7 +22,7 @@ export const useFileTreeQuery = (owner?: string, repo?: string, branch?: string)
       });
       return response.data;
     },
-
+    staleTime: 1000 * 60 * 5,
     enabled: !!owner && !!repo && !!branch,
   });
 };

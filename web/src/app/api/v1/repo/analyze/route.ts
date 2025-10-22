@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Octokit } from '@octokit/rest';
 import { auth } from '@/lib/auth';
+import { Client } from "@langchain/langgraph-sdk";
 
 interface FileObject {
   path: string;
@@ -55,9 +56,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Could not process any files.' }, { status: 500 });
     }
 
-    const analysisResult = await runFunctionalAnalysisAgent(validFiles);
+    const graphData = await runFunctionalAnalysisAgent(validFiles);
 
-    return NextResponse.json({ success: true, data: analysisResult });
+    return NextResponse.json(
+       {
+        repository: `${owner}/${repo}`,
+        filesAnalyzed: graphData.nodes?.length || 0,
+        graph_data: graphData
+      },
+      { status: 200 },
+  );
 
   } catch (error: any) {
     console.error('Analysis error:', error);
@@ -65,34 +73,59 @@ export async function POST(request: NextRequest) {
   }
 }
 
-async function runFunctionalAnalysisAgent(files: { path: string; content: string }[]) {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/copilotkit`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      agentName: 'functional_analyzer',
-      messages: [
-        {
-          role: 'user',
-          content: `
-            Analyze the provided source code for the following files. Your task is to:
-            1.  For each file, write a concise, one-sentence summary of its primary function.
-            2.  Identify the functional dependencies between them. For example, if 'UserProfile' uses 'Avatar' to show a picture, that is a dependency.
-            3.  Return a JSON object with a 'graph_data' key. This object should contain 'nodes' and 'edges'.
-            4.  Each node in the 'nodes' array should be an object: { "id": "file/path", "summary": "This component does X..." }.
-            5.  Each edge should be an object: { "source": "file/path/that/imports", "target": "file/path/that/is/imported" }.
-          `,
-        },
-      ],
-      state: {
-        files: files,
-        graph_data: { nodes: [], edges: [] }, 
-      },
-    }),
-  });
 
-  if (!response.ok) {
-    throw new Error(`Agent failed: ${response.statusText}`);
+async function runFunctionalAnalysisAgent(files: { path: string; content: string }[]) {
+  console.log('📤 Calling LangGraph SDK with files:', files.length);
+  
+  try {
+    const client = new Client({
+      apiUrl: process.env.LANGGRAPH_DEPLOYMENT_URL || 'http://localhost:8123'
+    });
+
+    console.log('Creating thread...');
+    const thread = await client.threads.create();
+    console.log('✅ Thread created:', thread.thread_id);
+
+    console.log('Starting run...');
+    const run = await client.runs.create(
+      thread.thread_id, 
+      'starterAgent', 
+      {
+        input: {
+          files: files,
+          graph_data: { nodes: [], edges: [] },
+          messages: []
+        }
+      }
+    );
+    
+    console.log('✅ Run started:', run.run_id);
+
+    console.log('Waiting for completion...');
+    const finalRun = await client.runs.join(thread.thread_id, run.run_id);
+    console.log('✅ Run completed with status:', finalRun.status);
+
+    console.log('Fetching final state...');
+    const state = await client.threads.getState(thread.thread_id);
+    
+    console.log('✅ Final state received:', JSON.stringify(state.values, null, 2));
+
+    if (state.values && state.values.graph_data) {
+      console.log('Graph ', {
+        nodes: state.values.graph_data.nodes?.length,
+        edges: state.values.graph_data.edges?.length
+      });
+      return state.values.graph_data;
+    } else {
+      console.error('❌ No graph_data in state!');
+      console.error('State:', state.values);
+      return { nodes: [], edges: [] };
+    }
+
+  } catch (error: any) {
+    console.error('LangGraph SDK error:', error);
+    console.error('Error details:', error.message);
+    console.error('Stack:', error.stack);
+    throw error;
   }
-  return await response.json();
 }
