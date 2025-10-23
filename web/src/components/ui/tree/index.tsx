@@ -45,7 +45,7 @@ type TreeNodeContextType = {
 };
 
 const TreeNodeContext = createContext<TreeNodeContextType | undefined>(
-  undefined
+  undefined,
 );
 
 const useTreeNode = () => {
@@ -84,10 +84,10 @@ export const TreeProvider = ({
   className,
 }: TreeProviderProps) => {
   const [expandedIds, setExpandedIds] = useState<Set<string>>(
-    new Set(defaultExpandedIds)
+    new Set(defaultExpandedIds),
   );
   const [internalSelectedIds, setInternalSelectedIds] = useState<string[]>(
-    selectedIds ?? []
+    selectedIds ?? [],
   );
 
   const isControlled =
@@ -134,7 +134,7 @@ export const TreeProvider = ({
       currentSelectedIds,
       isControlled,
       onSelectionChange,
-    ]
+    ],
   );
 
   return (
@@ -239,7 +239,7 @@ export const TreeNodeTrigger = ({
         "group relative mx-1 flex cursor-pointer items-center rounded-md px-3 py-2 transition-all duration-200",
         "hover:bg-accent/50",
         isSelected && "bg-accent/80",
-        className
+        className,
       )}
       onClick={(e) => {
         toggleExpanded(nodeId);
@@ -378,7 +378,7 @@ export const TreeExpander = ({
       animate={{ rotate: isExpanded ? 90 : 0 }}
       className={cn(
         "mr-1 flex h-4 w-4 cursor-pointer items-center justify-center",
-        className
+        className,
       )}
       onClick={(e) => {
         e.stopPropagation();
@@ -427,7 +427,7 @@ export const TreeIcon = ({
     <motion.div
       className={cn(
         "mr-2 flex h-4 w-4 items-center justify-center text-muted-foreground",
-        className
+        className,
       )}
       transition={{ duration: 0.15 }}
       whileHover={{ scale: 1.1 }}

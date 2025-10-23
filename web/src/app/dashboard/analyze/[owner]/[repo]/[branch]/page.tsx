@@ -45,29 +45,29 @@ export default function DependencyDetective() {
     initialState: {
       files: [],
       graph_data: { nodes: [], edges: [] },
-      messages: []
-    }
+      messages: [],
+    },
   });
 
   useEffect(() => {
     if (files && files.length > 0 && !analysisStarted) {
-      console.log('🚀 Starting analysis with', files.length, 'files');
+      console.log("🚀 Starting analysis with", files.length, "files");
 
       const preparedFiles = files.map((f: any) => ({
         path: f.path,
-        content: f.content || ''
+        content: f.content || "",
       }));
 
       setState({
         ...state,
-        files: preparedFiles
+        files: preparedFiles,
       });
-      
+
       // @ts-ignore
       run(() => {
         return new TextMessage({
           role: MessageRole.User,
-          content: `Analyze the ${preparedFiles.length} files and build a dependency graph.`
+          content: `Analyze the ${preparedFiles.length} files and build a dependency graph.`,
         });
       });
 
@@ -78,7 +78,8 @@ export default function DependencyDetective() {
   const fileTree = useMemo(() => buildTree(files), [files]);
 
   const graphData = state?.graph_data;
-  const isAnalyzing = analysisStarted && (!graphData || graphData.nodes?.length === 0);
+  const isAnalyzing =
+    analysisStarted && (!graphData || graphData.nodes?.length === 0);
 
   return (
     <div className="flex h-full w-full flex-col bg-neutral-50 dark:bg-black py-2">
@@ -115,7 +116,7 @@ export default function DependencyDetective() {
             "absolute md:static top-0 left-0 h-full z-20 w-64 border-r dark:border-neutral-800 overflow-y-auto bg-white dark:bg-zinc-950 transition-transform",
             isSidebarOpen
               ? "translate-x-0"
-              : "-translate-x-full md:translate-x-0"
+              : "-translate-x-full md:translate-x-0",
           )}
         >
           <div className="p-3 border-b dark:border-neutral-800">
@@ -184,7 +185,8 @@ export default function DependencyDetective() {
               </Button>
             </div>
             <div className="flex-1 overflow-scroll">
-              <CopilotChat className="h-full"
+              <CopilotChat
+                className="h-full"
                 instructions={`
                   You are analyzing ${owner}/${repo}.
                   

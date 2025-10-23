@@ -1,14 +1,19 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { Panel, useReactFlow, getNodesBounds, getViewportForBounds } from '@xyflow/react';
-import { toPng } from 'html-to-image';
-import { Download } from 'lucide-react';
+import React from "react";
+import {
+  Panel,
+  useReactFlow,
+  getNodesBounds,
+  getViewportForBounds,
+} from "@xyflow/react";
+import { toPng } from "html-to-image";
+import { Download } from "lucide-react";
 
 function downloadImage(dataUrl: string) {
-  const a = document.createElement('a');
-  a.setAttribute('download', 'reactflow-diagram.png');
-  a.setAttribute('href', dataUrl);
+  const a = document.createElement("a");
+  a.setAttribute("download", "reactflow-diagram.png");
+  a.setAttribute("href", dataUrl);
   a.click();
 }
 
@@ -17,9 +22,9 @@ const imageHeight = 768;
 
 function DownloadButton() {
   const { getNodes } = useReactFlow();
-  
+
   const onClick = () => {
-    const viewportElement = document.querySelector('.react-flow__viewport');
+    const viewportElement = document.querySelector(".react-flow__viewport");
 
     if (!viewportElement) {
       console.error("React Flow viewport element not found.");
@@ -27,10 +32,17 @@ function DownloadButton() {
     }
 
     const nodesBounds = getNodesBounds(getNodes());
-    const viewport = getViewportForBounds(nodesBounds, imageWidth, imageHeight, 0.5, 2, 0.1);
+    const viewport = getViewportForBounds(
+      nodesBounds,
+      imageWidth,
+      imageHeight,
+      0.5,
+      2,
+      0.1,
+    );
 
     toPng(viewportElement as HTMLElement, {
-      backgroundColor: '#ffffff', 
+      backgroundColor: "#ffffff",
       width: imageWidth,
       height: imageHeight,
       style: {

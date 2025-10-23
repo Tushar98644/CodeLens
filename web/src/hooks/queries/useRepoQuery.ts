@@ -11,7 +11,11 @@ export const useReposQuery = () => {
   });
 };
 
-export const useFileTreeQuery = (owner?: string, repo?: string, branch?: string) => {
+export const useFileTreeQuery = (
+  owner?: string,
+  repo?: string,
+  branch?: string,
+) => {
   return useQuery({
     queryKey: ["repoTree", owner, repo, branch],
     queryFn: async () => {

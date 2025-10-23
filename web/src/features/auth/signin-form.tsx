@@ -7,7 +7,9 @@ import { Icons } from "@/features/global/icons";
 import { authClient } from "@/lib/auth-client";
 
 export function SignInForm() {
-  const [loadingProvider, setLoadingProvider] = useState<"google" | "github" | null>(null);
+  const [loadingProvider, setLoadingProvider] = useState<
+    "google" | "github" | null
+  >(null);
 
   const handleSignIn = async (provider: "google" | "github") => {
     setLoadingProvider(provider);
@@ -15,9 +17,9 @@ export function SignInForm() {
     console.log(`Initiating sign-in with ${provider}...`);
     await authClient.signIn.social({
       provider: provider,
-      callbackURL: '/dashboard',
+      callbackURL: "/dashboard",
       newUserCallbackURL: "/dashboard",
-    })
+    });
     setLoadingProvider(null);
   };
 

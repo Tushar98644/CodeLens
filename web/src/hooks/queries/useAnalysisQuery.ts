@@ -7,8 +7,12 @@ interface AnalyzeRepoVariables {
   files: any;
 }
 
-const analyzeRepository = async ({ owner, repo, files }: AnalyzeRepoVariables) => {
-  const { data } = await axios.post('/api/v1/repo/analyze', { 
+const analyzeRepository = async ({
+  owner,
+  repo,
+  files,
+}: AnalyzeRepoVariables) => {
+  const { data } = await axios.post("/api/v1/repo/analyze", {
     owner,
     repo,
     files,

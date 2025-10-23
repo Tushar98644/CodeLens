@@ -1,0 +1,26 @@
+{
+  "name": "code-lens",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.6"
+  },
+  "workspaces": [
+    "web",
+    "agent"
+  ],
+  "scripts": {
+    "format:web": "cd web && bun run format",
+    "format:agent": "cd agent && npm run format"
+  },
+  "lint-staged": {
+    "web/**/*.{py,ts,tsx,js,jsx,json,css}": [
+      "cd web && bun run format"
+    ],
+    "agent/**/*.{py,ts,tsx,js,jsx,json,css}": [
+      "cd agent && bun run format"
+    ]
+  }
+}

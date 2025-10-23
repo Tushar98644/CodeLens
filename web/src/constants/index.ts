@@ -1,7 +1,7 @@
 import { LayoutDashboard, Settings, Bot, BarChart } from "lucide-react";
 
 export const SIDEBAR_ITEMS = {
-  "General": [
+  General: [
     {
       title: "Dashboard",
       icon: LayoutDashboard,
@@ -13,7 +13,7 @@ export const SIDEBAR_ITEMS = {
       route: "/dashboard/analyze",
     },
   ],
-  "Tools": [
+  Tools: [
     {
       title: "API Keys",
       icon: Settings,

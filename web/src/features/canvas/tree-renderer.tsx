@@ -1,4 +1,11 @@
-import { TreeNode, TreeNodeTrigger, TreeExpander, TreeIcon, TreeLabel, TreeNodeContent } from "@/components/ui/tree";
+import {
+  TreeNode,
+  TreeNodeTrigger,
+  TreeExpander,
+  TreeIcon,
+  TreeLabel,
+  TreeNodeContent,
+} from "@/components/ui/tree";
 import { Folder, File } from "lucide-react";
 
 export const RenderTreeNodes = ({
