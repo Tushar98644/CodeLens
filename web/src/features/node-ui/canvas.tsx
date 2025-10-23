@@ -12,6 +12,7 @@ import {
 import "@xyflow/react/dist/style.css";
 import DownloadButton from "./export-button";
 import { getLayoutedElements } from "@/utils/layout-elements";
+import { nodeTypes } from "@/components/nodes";
 
 interface FlowCanvasProps {
   graphData?: {
@@ -32,9 +33,9 @@ export const FlowCanvas = memo(({ graphData }: FlowCanvasProps) => {
     if (graphData && graphData.nodes.length > 0) {
       const flowNodes: Node[] = graphData.nodes.map((node) => ({
         id: node.id,
-        type: "default",
+        type: "fileNode",
         data: {
-          label: node.id.split("/").pop() || node.id,
+          id: node.id,
           summary: node.summary,
         },
         position: { x: 0, y: 0 },
@@ -73,6 +74,7 @@ export const FlowCanvas = memo(({ graphData }: FlowCanvasProps) => {
     <div style={{ height: "100%" }}>
       <ReactFlow
         nodes={nodes}
+        nodeTypes={nodeTypes}
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
