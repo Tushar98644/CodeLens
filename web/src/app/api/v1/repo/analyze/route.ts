@@ -103,7 +103,6 @@ async function runFunctionalAnalysisAgent(files: { path: string; content: string
 
     console.log('Waiting for completion...');
     const finalRun = await client.runs.join(thread.thread_id, run.run_id);
-    console.log('✅ Run completed with status:', finalRun.status);
 
     console.log('Fetching final state...');
     const state = await client.threads.getState(thread.thread_id);

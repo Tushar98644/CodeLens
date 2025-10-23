@@ -13,13 +13,23 @@ import {
 import { buildTree } from "@/utils/build-tree";
 import { FlowCanvas } from "@/features/node-ui/canvas";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { MessageSquare, Menu, X, Folder, File } from "lucide-react";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useFileTreeQuery } from "@/hooks/queries/useRepoQuery";
-import { useAnalysisQuery } from "@/hooks/queries/useAnalysisQuery";
 import { useParams } from "next/navigation";
+import { useCoAgent } from "@copilotkit/react-core";
+import { CopilotChat } from "@copilotkit/react-ui";
+import { TextMessage, MessageRole } from "@copilotkit/runtime-client-gql";
+
+type AgentState = {
+  files: Array<{ path: string; content: string }>;
+  graph_data: {
+    nodes: Array<{ id: string; summary: string }>;
+    edges: Array<{ source: string; target: string }>;
+  };
+  messages: any[];
+};
 
 const RenderTreeNodes = ({
   nodes,
@@ -62,6 +72,7 @@ export default function DependencyDetective() {
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [showChat, setShowChat] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [analysisStarted, setAnalysisStarted] = useState(false);
 
   const {
     data: files,
@@ -69,16 +80,51 @@ export default function DependencyDetective() {
     isError,
   } = useFileTreeQuery(owner, repo, branch);
 
-  console.log(files);
-  const { data: analysisData, isPending: analysisLoading } = useAnalysisQuery(
-    owner,
-    repo,
-    files,
-  );
+  // const { data: analysisData, isPending: analysisLoading } = useAnalysisQuery(
+  //   owner,
+  //   repo,
+  //   files
+  // );
+
+  const { state, setState, run } = useCoAgent<AgentState>({
+    name: "starterAgent",
+    initialState: {
+      files: [],
+      graph_data: { nodes: [], edges: [] },
+      messages: []
+    }
+  });
+
+  useEffect(() => {
+    if (files && files.length > 0 && !analysisStarted) {
+      console.log('🚀 Starting analysis with', files.length, 'files');
+
+      const preparedFiles = files.map((f: any) => ({
+        path: f.path,
+        content: f.content || ''
+      }));
+
+      setState({
+        ...state,
+        files: preparedFiles
+      });
+      
+      // @ts-ignore
+      run(() => {
+        return new TextMessage({
+          role: MessageRole.User,
+          content: `Analyze the ${preparedFiles.length} files and build a dependency graph.`
+        });
+      });
+
+      setAnalysisStarted(true);
+    }
+  }, [files, analysisStarted]);
 
   const fileTree = useMemo(() => buildTree(files), [files]);
 
-  const graphData = analysisData?.graph_data;
+  const graphData = state?.graph_data;
+  const isAnalyzing = analysisStarted && (!graphData || graphData.nodes?.length === 0);
 
   return (
     <div className="flex h-full w-full flex-col bg-neutral-50 dark:bg-black py-2">
@@ -115,7 +161,7 @@ export default function DependencyDetective() {
             "absolute md:static top-0 left-0 h-full z-20 w-64 border-r dark:border-neutral-800 overflow-y-auto bg-white dark:bg-zinc-950 transition-transform",
             isSidebarOpen
               ? "translate-x-0"
-              : "-translate-x-full md:translate-x-0",
+              : "-translate-x-full md:translate-x-0"
           )}
         >
           <div className="p-3 border-b dark:border-neutral-800">
@@ -143,7 +189,7 @@ export default function DependencyDetective() {
 
         {/* Main Canvas and Chat (unchanged) */}
         <main className="flex-1 relative overflow-hidden dark:bg-zinc-900/50">
-          <FlowCanvas graphData={graphData} isLoading={analysisLoading} />
+          <FlowCanvas graphData={graphData} isLoading={isAnalyzing} />
           {graphData && (
             <div className="absolute top-4 left-4 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm border rounded-lg shadow-lg p-3 space-y-2 text-sm">
               <div className="flex items-center justify-between gap-6">
@@ -165,8 +211,10 @@ export default function DependencyDetective() {
             </div>
           )}
         </main>
+
+        {/* AI Assistant Sidebar */}
         {showChat && (
-          <aside className="w-80 border-l dark:border-neutral-800 bg-white dark:bg-zinc-950 flex flex-col">
+          <aside className="w-96 border-l dark:border-neutral-800 bg-white dark:bg-zinc-950 flex flex-col">
             <div className="p-3 h-16 border-b dark:border-neutral-800 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <MessageSquare className="h-4 w-4 dark:text-blue-400" />
@@ -181,13 +229,27 @@ export default function DependencyDetective() {
                 <X className="h-4 w-4" />
               </Button>
             </div>
-            <div className="flex-1 overflow-y-auto p-4">
-              <p className="text-sm dark:text-neutral-400">
-                Ask me anything...
-              </p>
-            </div>
-            <div className="p-3 border-t dark:border-neutral-800">
-              <Input placeholder="Ask a question..." />
+            <div className="flex-1 overflow-scroll">
+              <CopilotChat
+                instructions={`
+                  You are analyzing ${owner}/${repo}.
+                  
+                  The repository has been analyzed:
+                  - Files: ${graphData?.nodes?.length || 0}
+                  - Dependencies: ${graphData?.edges?.length || 0}
+                  
+                  You have access to the full dependency graph in state.graph_data.
+                  Answer questions about:
+                  - What specific files do
+                  - Dependencies between files
+                  - Code architecture
+                  - Suggestions for improvements
+                `}
+                labels={{
+                  title: "Dependency Assistant",
+                  initial: "Ask me about the codebase...",
+                }}
+              />
             </div>
           </aside>
         )}

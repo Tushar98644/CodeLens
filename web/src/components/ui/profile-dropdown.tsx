@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { Skeleton } from "@/components/ui/skeleton";
+import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 
 interface Profile {
     name: string;
@@ -32,6 +34,7 @@ interface ProfileDropdownProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export default function ProfileDropdown({ data, className }: ProfileDropdownProps) {
+    const router = useRouter();
     const menuItems: MenuItem[] = [
         {
             label: "Settings",
@@ -56,6 +59,16 @@ export default function ProfileDropdown({ data, className }: ProfileDropdownProp
             </div>
         );
     }
+
+    const handleSignOut = async () => {
+        await authClient.signOut({
+            fetchOptions: {
+                onSuccess: () => {
+                    router.push("/auth/sign-in");
+                },
+            },
+        });
+    };
 
     return (
         <div className={cn("relative w-full", className)}>
@@ -95,7 +108,7 @@ export default function ProfileDropdown({ data, className }: ProfileDropdownProp
                         </div>
                     </button>
                 </DropdownMenuTrigger>
-                
+
                 <DropdownMenuContent
                     align="end"
                     sideOffset={10}
@@ -134,7 +147,7 @@ export default function ProfileDropdown({ data, className }: ProfileDropdownProp
                             className="w-full flex items-center gap-3 p-3 rounded-xl transition-colors duration-200 cursor-pointer group text-red-500 hover:bg-red-500/60 hover:border dark:hover:border-red-500/30 hover:text-red-600 dark:hover:text-red-400"
                         >
                             <LogOut className="w-4 h-4" />
-                            <span className="text-sm font-medium">
+                            <span onClick={handleSignOut} className="text-sm font-medium">
                                 Sign Out
                             </span>
                         </button>

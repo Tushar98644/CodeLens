@@ -3,12 +3,8 @@ import {
   ReactFlow,
   Controls,
   Background,
-  applyNodeChanges,
-  applyEdgeChanges,
   addEdge,
   MiniMap,
-  NodeChange,
-  EdgeChange,
   Node,
   Edge,
   useNodesState,
@@ -31,8 +27,8 @@ const options = {
 }
 
 export const FlowCanvas = memo(({ graphData, isLoading }: FlowCanvasProps) => {
-  const [nodes, setNodes, onNodesChange] = useNodesState<Node[]>([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge[]>([]);
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
   useEffect(() => {
     if (graphData && graphData.nodes.length > 0) {

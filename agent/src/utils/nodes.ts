@@ -14,34 +14,66 @@ export async function chat_node(state: AgentState, config: RunnableConfig) {
 
   if (!state.messages || state.messages.length === 0) {
     console.log('ℹ️  No messages to process, skipping chat node');
-    return {
-      messages: []
-    };
+    return {};
   }
 
-  const modelWithTools = model.bindTools!(
-    [
-      ...convertActionsToDynamicStructuredTools(state.copilotkit?.actions ?? []),
-      ...tools,
-    ],
-  );
+  const graphContext = buildGraphContext(state);
 
   const systemMessage = new SystemMessage({
-    content: `You are a helpful assistant. The current proverbs are.`,
+    content: `You are a code dependency analyzer assistant.
+
+${graphContext}
+
+Your job:
+- Answer questions about what files do (use the summaries above)
+- Explain dependencies between files
+- Provide insights about code architecture
+- Suggest improvements
+
+Use the graph data above to answer accurately.`
   });
+
+  const modelWithTools = model.bindTools([
+    ...convertActionsToDynamicStructuredTools(state.copilotkit?.actions ?? []),
+    ...tools,
+  ]);
 
   const response = await modelWithTools.invoke(
     [systemMessage, ...state.messages],
     config
   );
 
-  console.log('✅ Chat node response generated');
+  console.log('✅ Chat response generated');
 
   return {
-    messages: response,
+    messages: [response]
   };
 }
 
+function buildGraphContext(state: AgentState): string {
+  if (!state.graph_data || state.graph_data.nodes.length === 0) {
+    return "No repository analysis available yet.";
+  }
+
+  let context = `## Repository Analysis\n\n`;
+  context += `**Total Files Analyzed:** ${state.graph_data.nodes.length}\n`;
+  context += `**Dependencies Found:** ${state.graph_data.edges.length}\n\n`;
+  
+  context += `### File Summaries:\n\n`;
+  state.graph_data.nodes.forEach(node => {
+    context += `**${node.id}**\n`;
+    context += `${node.summary}\n\n`;
+  });
+
+  if (state.graph_data.edges.length > 0) {
+    context += `### Dependencies:\n\n`;
+    state.graph_data.edges.forEach(edge => {
+      context += `- \`${edge.source}\` imports \`${edge.target}\`\n`;
+    });
+  }
+
+  return context;
+}
 
 export async function analyze_files_node(state: AgentState) {
   console.log('\n🔍 ANALYZE FILES NODE CALLED');
