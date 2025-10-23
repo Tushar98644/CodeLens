@@ -53,10 +53,28 @@ const SideBar = () => {
                                 const Icon = item.icon;
                                 const active = isActive(item);
 
+                                if (item.route === "/dashboard/analyze") {
+                                    return (
+                                        <div
+                                            key={item.route}
+                                            className={cn(
+                                            "flex items-center gap-3 rounded-md text-sm font-medium transition-all duration-200 p-3 md:py-2 md:px-3",
+                                            "justify-center md:justify-start",
+                                            active
+                                                ? "bg-neutral-100 dark:bg-[#1C212D] text-neutral-900 dark:text-blue-400 border border-neutral-200 dark:border-blue-500/20"
+                                                : "text-neutral-500 hover:bg-neutral-100/50 dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-white"
+                                        )}
+                                        >
+                                            <Icon className="h-5 w-5" />
+                                            <span className="text-sm font-medium">{item.title}</span>
+                                        </div>
+                                    );
+                                }
+
                                 return (
                                     <Link
+                                        key={item.route}
                                         href={item.route}
-                                        key={item.title}
                                         className={cn(
                                             "flex items-center gap-3 rounded-md text-sm font-medium transition-all duration-200 p-3 md:py-2 md:px-3",
                                             "justify-center md:justify-start",
@@ -65,8 +83,8 @@ const SideBar = () => {
                                                 : "text-neutral-500 hover:bg-neutral-100/50 dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-white"
                                         )}
                                     >
-                                        <Icon className="h-4 w-4" />
-                                        <span className="hidden md:inline">{item.title}</span>
+                                        <Icon className="h-5 w-5" />
+                                        <span className="text-sm font-medium">{item.title}</span>
                                     </Link>
                                 );
                             })}

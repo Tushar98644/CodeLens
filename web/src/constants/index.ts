@@ -15,11 +15,6 @@ export const SIDEBAR_ITEMS = {
   ],
   "Tools": [
     {
-      title: "Dependency Detective",
-      icon: Bot,
-      route: "/dependency-detective",
-    },
-    {
       title: "API Keys",
       icon: Settings,
       route: "/dashboard/configuration",
