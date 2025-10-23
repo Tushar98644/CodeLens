@@ -57,14 +57,9 @@ function DownloadButton() {
     <Panel position="top-right">
       <button
         onClick={onClick}
-        className="
-          flex items-center gap-2 px-3 py-1.5 
-          font-semibold text-white bg-blue-600
-          border border-transparent rounded-lg shadow-sm
-          hover:bg-blue-700
-          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
-          transition-colors duration-200
-          text-xs"
+        className="flex items-center gap-3 rounded-md text-xs font-medium transition-all duration-200 p-3 md:py-2 
+        md:px-3 justify-center md:justify-start bg-neutral-100 dark:bg-[#262127] text-neutral-900 
+        dark:text-pink-400 border border-neutral-200 dark:border-blue-500/20 backdrop-blur-sm opacity-80"
       >
         <Download className="w-4 h-4" />
         <span>Download Image</span>

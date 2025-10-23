@@ -1,4 +1,4 @@
-import { convertActionsToDynamicStructuredTools } from "@copilotkit/sdk-js/langgraph";
+import { convertActionsToDynamicStructuredTools, copilotkitEmitState } from "@copilotkit/sdk-js/langgraph";
 import { SystemMessage } from "@langchain/core/messages";
 import { RunnableConfig } from "@langchain/core/runnables";
 import { model } from "../config/llm";
@@ -75,113 +75,114 @@ function buildGraphContext(state: AgentState): string {
 	return context;
 }
 
-export async function analyze_files_node(state: AgentState) {
-	console.log("\n🔍 ANALYZE FILES NODE CALLED");
-	console.log("Files received:", state.files?.length || 0);
+export async function analyze_files_node(state: AgentState, config: RunnableConfig) {
+  console.log('\n🔍 ANALYZE FILES NODE CALLED');
 
-	if (!state.files || state.files.length === 0) {
-		console.error("❌ No files to analyze!");
-		return {
-			graph_data: {
-				nodes: [],
-				edges: [],
-			},
-		};
-	}
+  await copilotkitEmitState(config, {
+    ...state,
+    analysis_progress: [
+      { step: "initialize", status: "completed", message: "Analysis started" },
+      { step: "analyze_files", status: "in-progress", message: `Analyzing ${state.files.length} files...` },
+      { step: "build_graph", status: "pending", message: "Waiting..." }
+    ]
+  });
 
-	console.log("Files to analyze:");
-	state.files.slice(0, 10).forEach((f) => {
-		console.log(`  - ${f.path} (${f.content.length} chars)`);
-	});
+  const nodes = [];
 
-	const nodes = [];
+  for (let i = 0; i < state.files.length; i++) {
+    const file = state.files[i];
+    
+    await copilotkitEmitState(config, {
+      ...state,
+      analysis_progress: [
+        { step: "initialize", status: "completed", message: "Analysis started" },
+        { step: "analyze_files", status: "in-progress", message: `Analyzing file ${i + 1}/${state.files.length}: ${file.path}` },
+        { step: "build_graph", status: "pending", message: "Waiting..." }
+      ]
+    });
 
-	for (const file of state.files.slice(0, 10)) {
-		console.log(`\n📝 Analyzing: ${file.path}`);
-		console.log(`Content preview: ${file.content.slice(0, 100)}...`);
+    try {
+      const response = await model.invoke(
+        `Summarize what this file does in 1-2 sentences:\n\nFile: ${file.path}\n\nCode:\n${file.content.slice(0, 1000)}`
+      );
+      
+      nodes.push({
+        id: file.path,
+        summary: response.content as string
+      });
+    } catch (error) {
+      console.error(`Error analyzing ${file.path}:`, error);
+    }
+  }
 
-		try {
-			const response = await model.invoke(
-				`Summarize what this file does in 1-2 sentences:\n\nFile: ${file.path}\n\nCode:\n${file.content.slice(0, 1000)}`,
-			);
+  await copilotkitEmitState(config, {
+    ...state,
+    analysis_progress: [
+      { step: "initialize", status: "completed", message: "Analysis started" },
+      { step: "analyze_files", status: "completed", message: `Analyzed ${nodes.length} files successfully` },
+      { step: "build_graph", status: "pending", message: "Building dependency graph..." }
+    ]
+  });
 
-			const summary = response.content as string;
-			console.log(`   ✅ Summary: ${summary}`);
-
-			nodes.push({
-				id: file.path,
-				summary: summary,
-			});
-		} catch (error) {
-			console.error(`   ❌ Error analyzing ${file.path}:`, error);
-		}
-	}
-
-	console.log(`\n✅ Analysis complete: ${nodes.length} nodes created`);
-	console.log(
-		"Nodes:",
-		nodes.map((n) => ({ id: n.id, summary: n.summary.slice(0, 50) + "..." })),
-	);
-
-	return {
-		graph_data: {
-			nodes,
-			edges: [],
-		},
-	};
+  return { 
+    graph_data: { nodes, edges: [] },
+    analysis_progress: [
+      { step: "initialize", status: "completed", message: "Analysis started" },
+      { step: "analyze_files", status: "completed", message: `Analyzed ${nodes.length} files` },
+      { step: "build_graph", status: "pending", message: "Building dependency graph..." }
+    ]
+  };
 }
 
-export async function build_edges_node(state: AgentState) {
-	console.log("\n🔗 BUILD EDGES NODE CALLED");
-	console.log("Files to process:", state.files?.length || 0);
-	console.log("Existing nodes:", state.graph_data?.nodes?.length || 0);
+export async function build_edges_node(state: AgentState, config: RunnableConfig) {
+  console.log('\n🔗 BUILD EDGES NODE CALLED');
+  
+  await copilotkitEmitState(config, {
+    ...state,
+    analysis_progress: [
+      { step: "initialize", status: "completed", message: "Analysis started" },
+      { step: "analyze_files", status: "completed", message: `Analyzed ${state.graph_data.nodes.length} files` },
+      { step: "build_graph", status: "in-progress", message: "Extracting dependencies..." }
+    ]
+  });
 
-	if (!state.files || state.files.length === 0) {
-		console.error("❌ No files to build edges from!");
-		return {
-			graph_data: {
-				nodes: state.graph_data?.nodes || [],
-				edges: [],
-			},
-		};
-	}
+  const edges = [];
 
-	const edges = [];
+  for (const file of state.files) {
+    const importRegex = /import .* from ['"](.+)['"]/g;
+    let match;
+    
+    while ((match = importRegex.exec(file.content)) !== null) {
+      if (match[1].startsWith('./') || match[1].startsWith('../')) {
+        edges.push({
+          source: file.path,
+          target: match[1]
+        });
+      }
+    }
+  }
 
-	for (const file of state.files) {
-		console.log(`\n🔎 Extracting imports from: ${file.path}`);
+  await copilotkitEmitState(config, {
+    ...state,
+    analysis_progress: [
+      { step: "initialize", status: "completed", message: "Analysis started" },
+      { step: "analyze_files", status: "completed", message: `Analyzed ${state.graph_data.nodes.length} files` },
+      { step: "build_graph", status: "completed", message: `Found ${edges.length} dependencies` }
+    ]
+  });
 
-		const importRegex = /import .* from ['"](.+)['"]/g;
-		let match;
-		let importCount = 0;
-
-		while ((match = importRegex.exec(file.content)) !== null) {
-			if (match[1].startsWith("./") || match[1].startsWith("../")) {
-				console.log(`→ Found import: ${match[1]}`);
-				edges.push({
-					source: file.path,
-					target: match[1],
-				});
-				importCount++;
-			}
-		}
-
-		if (importCount === 0) {
-			console.log("   ℹ️  No local imports found");
-		}
-	}
-
-	console.log(`\n✅ Edges built: ${edges.length} total`);
-	console.log("Sample edges:", edges.slice(0, 3));
-	console.log(`Graph data: ${!!state.graph_data}`);
-	console.log(`Nodes in graph: ${state.graph_data?.nodes?.length || 0}`);
-
-	return {
-		graph_data: {
-			nodes: state.graph_data.nodes,
-			edges,
-		},
-	};
+  return {
+    graph_data: {
+      nodes: state.graph_data.nodes,
+      edges
+    },
+    analysis_progress: [
+      { step: "initialize", status: "completed", message: "Analysis started" },
+      { step: "analyze_files", status: "completed", message: `Analyzed ${state.graph_data.nodes.length} files` },
+      { step: "build_graph", status: "completed", message: `Found ${edges.length} dependencies` }
+    ]
+  };
 }
+
 
 export const tool_node = new ToolNode(tools);

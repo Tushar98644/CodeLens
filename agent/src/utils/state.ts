@@ -21,10 +21,17 @@ export interface FileObject {
 	content: string;
 }
 
+export interface AnalysisProgress {
+  step: string;
+  status: "pending" | "in-progress" | "completed" | "error";
+  message: string;
+}
+
 export const AgentStateAnnotation = Annotation.Root({
 	...CopilotKitStateAnnotation.spec,
 	files: Annotation<FileObject[]>,
 	graph_data: Annotation<GraphData>,
+	analysis_progress: Annotation<AnalysisProgress[]>
 });
 
 export type AgentState = typeof AgentStateAnnotation.State;
