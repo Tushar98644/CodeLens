@@ -1,19 +1,10 @@
 "use client";
 
-import {
-  TreeExpander,
-  TreeIcon,
-  TreeLabel,
-  TreeNode,
-  TreeNodeContent,
-  TreeNodeTrigger,
-  TreeProvider,
-  TreeView,
-} from "@/components/ui/tree";
+import { TreeProvider, TreeView } from "@/components/ui/tree";
 import { buildTree } from "@/utils/build-tree";
 import { FlowCanvas } from "@/features/node-ui/canvas";
 import { Button } from "@/components/ui/button";
-import { MessageSquare, Menu, X, Folder, File } from "lucide-react";
+import { MessageSquare, Menu, X } from "lucide-react";
 import { useState, useMemo, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useFileTreeQuery } from "@/hooks/queries/useRepoQuery";
@@ -21,6 +12,7 @@ import { useParams } from "next/navigation";
 import { useCoAgent } from "@copilotkit/react-core";
 import { CopilotChat } from "@copilotkit/react-ui";
 import { TextMessage, MessageRole } from "@copilotkit/runtime-client-gql";
+import { RenderTreeNodes } from "@/features/canvas/tree-renderer";
 
 type AgentState = {
   files: Array<{ path: string; content: string }>;
@@ -29,38 +21,6 @@ type AgentState = {
     edges: Array<{ source: string; target: string }>;
   };
   messages: any[];
-};
-
-const RenderTreeNodes = ({
-  nodes,
-  level = 0,
-}: {
-  nodes: any;
-  level?: number;
-}) => {
-  return Object.values(nodes).map((node: any) => (
-    <TreeNode key={node.path} nodeId={node.path} level={level}>
-      <TreeNodeTrigger>
-        <TreeExpander hasChildren={node.isDirectory} />
-        <TreeIcon
-          hasChildren={node.isDirectory}
-          icon={
-            node.isDirectory ? (
-              <Folder className="h-4 w-4" />
-            ) : (
-              <File className="h-4 w-4" />
-            )
-          }
-        />
-        <TreeLabel>{node.name}</TreeLabel>
-      </TreeNodeTrigger>
-      {node.isDirectory && (
-        <TreeNodeContent hasChildren>
-          <RenderTreeNodes nodes={node.children} level={level + 1} />
-        </TreeNodeContent>
-      )}
-    </TreeNode>
-  ));
 };
 
 export default function DependencyDetective() {
@@ -79,12 +39,6 @@ export default function DependencyDetective() {
     isLoading,
     isError,
   } = useFileTreeQuery(owner, repo, branch);
-
-  // const { data: analysisData, isPending: analysisLoading } = useAnalysisQuery(
-  //   owner,
-  //   repo,
-  //   files
-  // );
 
   const { state, setState, run } = useCoAgent<AgentState>({
     name: "starterAgent",
@@ -214,7 +168,7 @@ export default function DependencyDetective() {
 
         {/* AI Assistant Sidebar */}
         {showChat && (
-          <aside className="w-96 border-l dark:border-neutral-800 bg-white dark:bg-zinc-950 flex flex-col">
+          <aside className="w-80 border-l dark:border-neutral-800 bg-white dark:bg-zinc-950 flex flex-col">
             <div className="p-3 h-16 border-b dark:border-neutral-800 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <MessageSquare className="h-4 w-4 dark:text-blue-400" />
@@ -230,7 +184,7 @@ export default function DependencyDetective() {
               </Button>
             </div>
             <div className="flex-1 overflow-scroll">
-              <CopilotChat
+              <CopilotChat className="h-full"
                 instructions={`
                   You are analyzing ${owner}/${repo}.
                   
