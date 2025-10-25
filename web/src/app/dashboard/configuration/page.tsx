@@ -2,13 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton"; // Assuming you have a Skeleton component
 import { cn } from "@/lib/utils";
 import { Plus, Copy, MoreHorizontal, Check } from "lucide-react";
@@ -25,27 +19,21 @@ const MOCK_API_KEYS = [
     id: 2,
     key: "gn_...KKA",
     name: "Testing Key",
-    createdOn: new Date(
-      new Date().setDate(new Date().getDate() - 5),
-    ).toISOString(),
+    createdOn: new Date(new Date().setDate(new Date().getDate() - 5)).toISOString(),
     tier: "Free tier",
   },
   {
     id: 3,
     key: "gn_...ioa4",
     name: "Analytics Key",
-    createdOn: new Date(
-      new Date().setDate(new Date().getDate() - 15),
-    ).toISOString(),
+    createdOn: new Date(new Date().setDate(new Date().getDate() - 15)).toISOString(),
     tier: "Free tier",
   },
   {
     id: 4,
     key: "gn_...WYIU",
     name: "Old Project Key",
-    createdOn: new Date(
-      new Date().setDate(new Date().getDate() - 40),
-    ).toISOString(),
+    createdOn: new Date(new Date().setDate(new Date().getDate() - 40)).toISOString(),
     tier: "Free tier",
   },
 ];
@@ -69,10 +57,7 @@ function ApiKeysContent() {
     }
 
     if (groupBy === "date") {
-      keys.sort(
-        (a, b) =>
-          new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime(),
-      );
+      keys.sort((a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime());
     } else if (groupBy === "name") {
       keys.sort((a, b) => a.name.localeCompare(b.name));
     }
@@ -149,10 +134,7 @@ function ApiKeysContent() {
         <div className="divide-y divide-zinc-800">
           {isLoading
             ? Array.from({ length: MOCK_API_KEYS.length }).map((_, i) => (
-                <div
-                  key={i}
-                  className="grid grid-cols-5 gap-4 px-6 py-4 items-center"
-                >
+                <div key={i} className="grid grid-cols-5 gap-4 px-6 py-4 items-center">
                   <div className="col-span-2 space-y-2">
                     <Skeleton className="h-4 w-3/4 bg-zinc-800" />
                     <Skeleton className="h-3 w-1/2 bg-zinc-800" />
@@ -172,9 +154,7 @@ function ApiKeysContent() {
                   className="grid grid-cols-5 gap-4 px-6 py-4 items-center hover:bg-zinc-900/50 transition-colors duration-200"
                 >
                   <div className="col-span-2">
-                    <p className="font-mono text-sm text-neutral-100">
-                      {key.key}
-                    </p>
+                    <p className="font-mono text-sm text-neutral-100">{key.key}</p>
                     <p className="text-xs text-neutral-400">{key.name}</p>
                   </div>
                   <p className="col-span-1 text-sm text-neutral-300">
@@ -185,10 +165,7 @@ function ApiKeysContent() {
                     })}
                   </p>
                   <div className="col-span-1">
-                    <a
-                      href="#"
-                      className="text-sm text-blue-400 hover:underline"
-                    >
+                    <a href="#" className="text-sm text-blue-400 hover:underline">
                       {key.tier}
                     </a>
                   </div>
@@ -205,11 +182,7 @@ function ApiKeysContent() {
                         <Copy className="h-4 w-4" />
                       )}
                     </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 hover:text-blue-400"
-                    >
+                    <Button variant="ghost" size="icon" className="h-8 w-8 hover:text-blue-400">
                       <MoreHorizontal className="h-4 w-4" />
                     </Button>
                   </div>

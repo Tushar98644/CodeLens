@@ -37,9 +37,7 @@ const SideBar = () => {
       {/* Header section */}
       <div className="h-20 flex-shrink-0 px-4 flex items-center justify-center md:justify-start md:px-6 gap-3">
         <Icons.logo className="h-7 w-7 text-blue-500 dark:text-blue-400 hover:animate-pulse" />
-        <span className="text-lg font-semibold hidden md:inline text-neutral-800 dark:text-neutral-100">
-          Code Lens
-        </span>
+        <span className="text-lg font-semibold hidden md:inline text-neutral-800 dark:text-neutral-100">Code Lens</span>
       </div>
 
       <nav className="flex-1 space-y-4 overflow-y-auto p-2 md:p-4">

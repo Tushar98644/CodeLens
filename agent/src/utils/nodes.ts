@@ -77,7 +77,8 @@ function buildGraphContext(state: AgentState): string {
 
 export async function analyze_files_node(state: AgentState, config: RunnableConfig) {
   console.log('\n🔍 ANALYZE FILES NODE CALLED');
-
+  
+  console.log('Files received:', state.files);
   await copilotkitEmitState(config, {
     ...state,
     analysis_progress: [
@@ -91,7 +92,8 @@ export async function analyze_files_node(state: AgentState, config: RunnableConf
 
   for (let i = 0; i < state.files.length; i++) {
     const file = state.files[i];
-    
+    console.log(`Analyzing file ${file.content}`);
+
     await copilotkitEmitState(config, {
       ...state,
       analysis_progress: [
@@ -123,8 +125,10 @@ export async function analyze_files_node(state: AgentState, config: RunnableConf
       { step: "build_graph", status: "pending", message: "Building dependency graph..." }
     ]
   });
-
+  
+  console.log(`File state to be sent: `, state.files);
   return { 
+    files: state.files,
     graph_data: { nodes, edges: [] },
     analysis_progress: [
       { step: "initialize", status: "completed", message: "Analysis started" },
@@ -136,7 +140,17 @@ export async function analyze_files_node(state: AgentState, config: RunnableConf
 
 export async function build_edges_node(state: AgentState, config: RunnableConfig) {
   console.log('\n🔗 BUILD EDGES NODE CALLED');
+
+  console.log('Files received:', state.files);
   
+  if (state.files && state.files.length > 0) {
+    console.log('First file:', {
+      path: state.files[0].path,
+      contentLength: state.files[0].content?.length || 0,
+      hasContent: !!state.files[0].content
+    });
+  }  
+
   await copilotkitEmitState(config, {
     ...state,
     analysis_progress: [
@@ -172,6 +186,7 @@ export async function build_edges_node(state: AgentState, config: RunnableConfig
   });
 
   return {
+    files: state.files,
     graph_data: {
       nodes: state.graph_data.nodes,
       edges
@@ -183,6 +198,5 @@ export async function build_edges_node(state: AgentState, config: RunnableConfig
     ]
   };
 }
-
 
 export const tool_node = new ToolNode(tools);

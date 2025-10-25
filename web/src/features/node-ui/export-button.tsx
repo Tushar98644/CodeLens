@@ -1,12 +1,7 @@
 "use client";
 
 import React from "react";
-import {
-  Panel,
-  useReactFlow,
-  getNodesBounds,
-  getViewportForBounds,
-} from "@xyflow/react";
+import { Panel, useReactFlow, getNodesBounds, getViewportForBounds } from "@xyflow/react";
 import { toPng } from "html-to-image";
 import { Download } from "lucide-react";
 
@@ -32,14 +27,7 @@ function DownloadButton() {
     }
 
     const nodesBounds = getNodesBounds(getNodes());
-    const viewport = getViewportForBounds(
-      nodesBounds,
-      imageWidth,
-      imageHeight,
-      0.5,
-      2,
-      0.1,
-    );
+    const viewport = getViewportForBounds(nodesBounds, imageWidth, imageHeight, 0.5, 2, 0.1);
 
     toPng(viewportElement as HTMLElement, {
       backgroundColor: "#ffffff",

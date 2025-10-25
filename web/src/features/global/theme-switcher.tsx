@@ -24,19 +24,16 @@ const Skiper26 = () => {
           Skiper ui is live now
         </h2>
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil, ex
-          eligendi veniam praesentium temporibus natus quae laborum nemo
-          repellendus cum!
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil, ex eligendi veniam praesentium temporibus
+          natus quae laborum nemo repellendus cum!
         </p>
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil, ex
-          eligendi veniam praesentium temporibus natus quae laborum nemo
-          repellendus cum!
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil, ex eligendi veniam praesentium temporibus
+          natus quae laborum nemo repellendus cum!
         </p>
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil, ex
-          eligendi veniam praesentium temporibus natus quae laborum nemo
-          repellendus cum!
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil, ex eligendi veniam praesentium temporibus
+          natus quae laborum nemo repellendus cum!
         </p>
       </div>
 
@@ -46,12 +43,7 @@ const Skiper26 = () => {
         </span>
       </div>
 
-      <ThemeToggleButton
-        variant={variant}
-        start={start}
-        blur={blur}
-        gifUrl={gifUrl}
-      />
+      <ThemeToggleButton variant={variant} start={start} blur={blur} gifUrl={gifUrl} />
       <Options
         variant={variant}
         start={start}
@@ -116,9 +108,7 @@ const Options = ({
               onClick={() => setVariant("circle")}
               className={cn(
                 "cursor-pointer px-1 text-sm transition-opacity",
-                variant === "circle"
-                  ? "opacity-100"
-                  : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
+                variant === "circle" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
               )}
             >
               circle
@@ -127,9 +117,7 @@ const Options = ({
               onClick={() => setVariant("rectangle")}
               className={cn(
                 "cursor-pointer px-1 text-sm transition-opacity",
-                variant === "rectangle"
-                  ? "opacity-100"
-                  : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
+                variant === "rectangle" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
               )}
             >
               rectangle
@@ -138,9 +126,7 @@ const Options = ({
               onClick={() => setVariant("gif")}
               className={cn(
                 "cursor-pointer px-1 text-sm transition-opacity",
-                variant === "gif"
-                  ? "opacity-100"
-                  : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
+                variant === "gif" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
               )}
             >
               gif
@@ -149,9 +135,7 @@ const Options = ({
               onClick={() => setVariant("polygon")}
               className={cn(
                 "cursor-pointer px-1 text-sm transition-opacity",
-                variant === "polygon"
-                  ? "opacity-100"
-                  : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
+                variant === "polygon" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
               )}
             >
               polygon
@@ -160,9 +144,7 @@ const Options = ({
               onClick={() => setVariant("circle-blur")}
               className={cn(
                 "cursor-pointer px-1 text-sm transition-opacity",
-                variant === "circle-blur"
-                  ? "opacity-100"
-                  : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
+                variant === "circle-blur" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
               )}
             >
               circle-blur
@@ -177,9 +159,7 @@ const Options = ({
               onClick={() => setBlur(false)}
               className={cn(
                 "cursor-pointer px-1 text-sm transition-opacity",
-                !blur
-                  ? "opacity-100"
-                  : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
+                !blur ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
               )}
             >
               off
@@ -188,9 +168,7 @@ const Options = ({
               onClick={() => setBlur(true)}
               className={cn(
                 "cursor-pointer px-1 text-sm transition-opacity",
-                blur
-                  ? "opacity-100"
-                  : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
+                blur ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
               )}
             >
               on
@@ -199,10 +177,7 @@ const Options = ({
         </div>
 
         {/* Show start options for circle, rectangle, polygon, and circle-blur */}
-        {(variant === "circle" ||
-          variant === "rectangle" ||
-          variant === "polygon" ||
-          variant === "circle-blur") && (
+        {(variant === "circle" || variant === "rectangle" || variant === "polygon" || variant === "circle-blur") && (
           <div className="mt-1 flex justify-between py-1">
             <p className="w-20 whitespace-nowrap text-sm opacity-50">start :</p>
             <div className="flex flex-wrap items-center justify-end gap-1">
@@ -212,9 +187,7 @@ const Options = ({
                   onClick={() => setStart("center")}
                   className={cn(
                     "cursor-pointer px-1 text-sm transition-opacity",
-                    start === "center"
-                      ? "opacity-100"
-                      : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
+                    start === "center" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
                   )}
                 >
                   center
@@ -228,9 +201,7 @@ const Options = ({
                     onClick={() => setStart("bottom-up")}
                     className={cn(
                       "cursor-pointer px-1 text-sm transition-opacity",
-                      start === "bottom-up"
-                        ? "opacity-100"
-                        : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
+                      start === "bottom-up" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
                     )}
                   >
                     bottom-up
@@ -239,9 +210,7 @@ const Options = ({
                     onClick={() => setStart("top-down")}
                     className={cn(
                       "cursor-pointer px-1 text-sm transition-opacity",
-                      start === "top-down"
-                        ? "opacity-100"
-                        : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
+                      start === "top-down" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
                     )}
                   >
                     top-down
@@ -250,9 +219,7 @@ const Options = ({
                     onClick={() => setStart("left-right")}
                     className={cn(
                       "cursor-pointer px-1 text-sm transition-opacity",
-                      start === "left-right"
-                        ? "opacity-100"
-                        : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
+                      start === "left-right" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
                     )}
                   >
                     left-right
@@ -261,9 +228,7 @@ const Options = ({
                     onClick={() => setStart("right-left")}
                     className={cn(
                       "cursor-pointer px-1 text-sm transition-opacity",
-                      start === "right-left"
-                        ? "opacity-100"
-                        : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
+                      start === "right-left" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
                     )}
                   >
                     right-left
@@ -272,17 +237,13 @@ const Options = ({
               )}
 
               {/* Show corner options for circle, polygon, and circle-blur variants */}
-              {(variant === "circle" ||
-                variant === "polygon" ||
-                variant === "circle-blur") && (
+              {(variant === "circle" || variant === "polygon" || variant === "circle-blur") && (
                 <>
                   <button
                     onClick={() => setStart("top-left")}
                     className={cn(
                       "cursor-pointer px-1 text-sm transition-opacity",
-                      start === "top-left"
-                        ? "opacity-100"
-                        : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
+                      start === "top-left" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
                     )}
                   >
                     top-left
@@ -291,9 +252,7 @@ const Options = ({
                     onClick={() => setStart("top-right")}
                     className={cn(
                       "cursor-pointer px-1 text-sm transition-opacity",
-                      start === "top-right"
-                        ? "opacity-100"
-                        : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
+                      start === "top-right" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
                     )}
                   >
                     top-right
@@ -335,9 +294,7 @@ const Options = ({
                     onClick={() => setStart("top-center")}
                     className={cn(
                       "cursor-pointer px-1 text-sm transition-opacity",
-                      start === "top-center"
-                        ? "opacity-100"
-                        : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
+                      start === "top-center" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
                     )}
                   >
                     top-center
@@ -346,9 +303,7 @@ const Options = ({
                     onClick={() => setStart("bottom-center")}
                     className={cn(
                       "cursor-pointer px-1 text-sm transition-opacity",
-                      start === "bottom-center"
-                        ? "opacity-100"
-                        : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
+                      start === "bottom-center" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
                     )}
                   >
                     bottom-center
@@ -373,9 +328,7 @@ const Options = ({
                 }}
                 className={cn(
                   "cursor-pointer px-1 text-sm transition-opacity",
-                  gifType === "1"
-                    ? "opacity-100"
-                    : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
+                  gifType === "1" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
                 )}
               >
                 1
@@ -389,9 +342,7 @@ const Options = ({
                 }}
                 className={cn(
                   "cursor-pointer px-1 text-sm transition-opacity",
-                  gifType === "2"
-                    ? "opacity-100"
-                    : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
+                  gifType === "2" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
                 )}
               >
                 2
@@ -405,9 +356,7 @@ const Options = ({
                 }}
                 className={cn(
                   "cursor-pointer px-1 text-sm transition-opacity",
-                  gifType === "3"
-                    ? "opacity-100"
-                    : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
+                  gifType === "3" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
                 )}
               >
                 3
@@ -416,9 +365,7 @@ const Options = ({
                 onClick={() => setGifType("custom")}
                 className={cn(
                   "cursor-pointer px-1 text-sm transition-opacity",
-                  gifType === "custom"
-                    ? "opacity-100"
-                    : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
+                  gifType === "custom" ? "opacity-100" : "hover:bg-foreground/10 opacity-50 hover:opacity-100",
                 )}
               >
                 custom
@@ -505,17 +452,7 @@ export const useThemeToggle = ({
     }
 
     document.startViewTransition(switchTheme);
-  }, [
-    theme,
-    setTheme,
-    variant,
-    start,
-    blur,
-    gifUrl,
-    updateStyles,
-    isDark,
-    setIsDark,
-  ]);
+  }, [theme, setTheme, variant, start, blur, gifUrl, updateStyles, isDark, setIsDark]);
 
   const setCrazyLightTheme = useCallback(() => {
     setIsDark(false);
@@ -600,18 +537,9 @@ export const ThemeToggleButton = ({
     >
       <span className="sr-only">Toggle theme</span>
       <svg viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <motion.g
-          animate={{ rotate: isDark ? -180 : 0 }}
-          transition={{ ease: "easeInOut", duration: 0.5 }}
-        >
-          <path
-            d="M120 67.5C149.25 67.5 172.5 90.75 172.5 120C172.5 149.25 149.25 172.5 120 172.5"
-            fill="white"
-          />
-          <path
-            d="M120 67.5C90.75 67.5 67.5 90.75 67.5 120C67.5 149.25 90.75 172.5 120 172.5"
-            fill="black"
-          />
+        <motion.g animate={{ rotate: isDark ? -180 : 0 }} transition={{ ease: "easeInOut", duration: 0.5 }}>
+          <path d="M120 67.5C149.25 67.5 172.5 90.75 172.5 120C172.5 149.25 149.25 172.5 120 172.5" fill="white" />
+          <path d="M120 67.5C90.75 67.5 67.5 90.75 67.5 120C67.5 149.25 90.75 172.5 120 172.5" fill="black" />
         </motion.g>
         <motion.path
           animate={{ rotate: isDark ? 180 : 0 }}
@@ -624,12 +552,7 @@ export const ThemeToggleButton = ({
   );
 };
 
-export type AnimationVariant =
-  | "circle"
-  | "rectangle"
-  | "gif"
-  | "polygon"
-  | "circle-blur";
+export type AnimationVariant = "circle" | "rectangle" | "gif" | "polygon" | "circle-blur";
 export type AnimationStart =
   | "top-left"
   | "top-right"

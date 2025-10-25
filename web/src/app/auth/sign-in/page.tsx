@@ -24,17 +24,11 @@ const SignInPage = () => {
         <div className="mt-auto flex w-full flex-col items-center gap-6 pt-8">
           <p className="px-8 text-center text-sm text-muted-foreground">
             By signing in, you agree to our{" "}
-            <Link
-              href="/terms"
-              className="underline underline-offset-4 hover:text-primary"
-            >
+            <Link href="/terms" className="underline underline-offset-4 hover:text-primary">
               Terms of Service
             </Link>{" "}
             and{" "}
-            <Link
-              href="/privacy"
-              className="underline underline-offset-4 hover:text-primary"
-            >
+            <Link href="/privacy" className="underline underline-offset-4 hover:text-primary">
               Privacy Policy
             </Link>
             .
@@ -42,10 +36,7 @@ const SignInPage = () => {
           <div className="flex w-full items-center justify-center border-t border-border/80 py-6">
             <p className="text-sm text-muted-foreground">
               Don&apos;t have an account?{" "}
-              <Link
-                href="/auth/sign-up"
-                className="font-medium text-primary hover:underline underline-offset-4"
-              >
+              <Link href="/auth/sign-up" className="font-medium text-primary hover:underline underline-offset-4">
                 Sign up
               </Link>
             </p>

@@ -7,9 +7,7 @@ import { Icons } from "@/features/global/icons";
 import { authClient } from "@/lib/auth-client";
 
 export function SignInForm() {
-  const [loadingProvider, setLoadingProvider] = useState<
-    "google" | "github" | null
-  >(null);
+  const [loadingProvider, setLoadingProvider] = useState<"google" | "github" | null>(null);
 
   const handleSignIn = async (provider: "google" | "github") => {
     setLoadingProvider(provider);
@@ -28,20 +26,12 @@ export function SignInForm() {
   return (
     <div className="flex w-full flex-col items-center gap-y-8">
       <div className="text-center">
-        <h2 className="text-2xl font-medium tracking-tight">
-          Sign in to Code Lens
-        </h2>
-        <p className="mt-1 text-muted-foreground">
-          Welcome back! Please sign in to continue.
-        </p>
+        <h2 className="text-2xl font-medium tracking-tight">Sign in to Code Lens</h2>
+        <p className="mt-1 text-muted-foreground">Welcome back! Please sign in to continue.</p>
       </div>
 
       <div className="flex w-full flex-col gap-2">
-        <Button
-          variant="outline"
-          disabled={isGlobalLoading}
-          onClick={() => handleSignIn("google")}
-        >
+        <Button variant="outline" disabled={isGlobalLoading} onClick={() => handleSignIn("google")}>
           {loadingProvider === "google" ? (
             <Spinner />
           ) : (
@@ -52,11 +42,7 @@ export function SignInForm() {
           )}
         </Button>
 
-        <Button
-          variant="outline"
-          disabled={isGlobalLoading}
-          onClick={() => handleSignIn("github")}
-        >
+        <Button variant="outline" disabled={isGlobalLoading} onClick={() => handleSignIn("github")}>
           {loadingProvider === "github" ? (
             <Spinner />
           ) : (

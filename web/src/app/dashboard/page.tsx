@@ -42,9 +42,7 @@ export default function GitHubIntegrationPage() {
     });
   };
 
-  const filteredRepos = repos?.filter((repo: any) =>
-    repo.name.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+  const filteredRepos = repos?.filter((repo: any) => repo.name.toLowerCase().includes(searchQuery.toLowerCase()));
 
   if (isPending) {
     return <DashboardSkeleton />;
@@ -58,12 +56,8 @@ export default function GitHubIntegrationPage() {
     <div className="h-full w-full bg-black text-white p-4 md:p-8 flex flex-col">
       {/* --- Header --- */}
       <header className="flex-shrink-0 pb-6 border-b border-zinc-800/60">
-        <h1 className="text-xl font-medium text-neutral-100">
-          GitHub Repositories
-        </h1>
-        <p className="text-neutral-400 mt-1 text-sm">
-          View and manage repositories connected to your GitHub account.
-        </p>
+        <h1 className="text-xl font-medium text-neutral-100">GitHub Repositories</h1>
+        <p className="text-neutral-400 mt-1 text-sm">View and manage repositories connected to your GitHub account.</p>
       </header>
 
       {/* --- Toolbar with Search --- */}

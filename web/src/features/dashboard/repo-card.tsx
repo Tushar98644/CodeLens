@@ -1,12 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {
-  GitFork,
-  Star,
-  Lock,
-  Unlock,
-  ExternalLink,
-  BarChart3,
-} from "lucide-react";
+import { GitFork, Star, Lock, Unlock, ExternalLink, BarChart3 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -30,9 +23,7 @@ export const RepositoryCard = ({ repo }: { repo: Repo }) => {
   const router = useRouter();
 
   const handleAnalyze = () => {
-    router.push(
-      `/dashboard/analyze/${repo.owner.login}/${repo.name}/${repo.default_branch}`,
-    );
+    router.push(`/dashboard/analyze/${repo.owner.login}/${repo.name}/${repo.default_branch}`);
   };
 
   return (
@@ -55,19 +46,11 @@ export const RepositoryCard = ({ repo }: { repo: Repo }) => {
       </Link>
 
       <div className="flex items-center gap-2 pr-8">
-        <h3 className="text-md font-semibold text-neutral-100 truncate">
-          {repo.name}
-        </h3>
-        {repo.private ? (
-          <Lock className="h-3 w-3 text-neutral-500" />
-        ) : (
-          <Unlock className="h-3 w-3 text-neutral-500" />
-        )}
+        <h3 className="text-md font-semibold text-neutral-100 truncate">{repo.name}</h3>
+        {repo.private ? <Lock className="h-3 w-3 text-neutral-500" /> : <Unlock className="h-3 w-3 text-neutral-500" />}
       </div>
 
-      <p className="text-sm text-neutral-400 mt-1 flex-1">
-        {repo.description || "No description provided."}
-      </p>
+      <p className="text-sm text-neutral-400 mt-1 flex-1">{repo.description || "No description provided."}</p>
 
       <div className="flex items-center justify-between mt-4">
         <div className="flex items-center gap-4 text-neutral-400 text-sm">
@@ -95,13 +78,7 @@ export const RepositoryCard = ({ repo }: { repo: Repo }) => {
             <BarChart3 className="h-4 w-4 mr-2" />
             Analyze
           </Button>
-          <Image
-            src={repo.owner.avatar_url}
-            alt="Owner Avatar"
-            width={28}
-            height={28}
-            className="rounded-full"
-          />
+          <Image src={repo.owner.avatar_url} alt="Owner Avatar" width={28} height={28} className="rounded-full" />
         </div>
       </div>
     </div>

@@ -24,9 +24,6 @@ export const GET = async (req: Request, res: Response) => {
     });
     return new Response(JSON.stringify(repos), { status: 200 });
   } catch (error) {
-    return new Response(
-      JSON.stringify({ error: "Error fetching repositories" }),
-      { status: 500 },
-    );
+    return new Response(JSON.stringify({ error: "Error fetching repositories" }), { status: 500 });
   }
 };

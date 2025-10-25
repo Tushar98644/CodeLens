@@ -33,10 +33,7 @@ interface ProfileDropdownProps extends React.HTMLAttributes<HTMLDivElement> {
   data?: Profile;
 }
 
-export default function ProfileDropdown({
-  data,
-  className,
-}: ProfileDropdownProps) {
+export default function ProfileDropdown({ data, className }: ProfileDropdownProps) {
   const router = useRouter();
   const menuItems: MenuItem[] = [
     {
@@ -102,12 +99,8 @@ export default function ProfileDropdown({
 
             {/* User Info */}
             <div className="hidden md:flex flex-col flex-1 truncate">
-              <div className="text-sm font-medium text-zinc-900 dark:text-zinc-100 truncate">
-                {data.name}
-              </div>
-              <div className="text-xs text-zinc-500 dark:text-zinc-400 truncate">
-                {data.email}
-              </div>
+              <div className="text-sm font-medium text-zinc-900 dark:text-zinc-100 truncate">{data.name}</div>
+              <div className="text-xs text-zinc-500 dark:text-zinc-400 truncate">{data.email}</div>
             </div>
           </button>
         </DropdownMenuTrigger>

@@ -64,10 +64,7 @@ export const POST = async (req: Request, res: Response) => {
   });
 
   if (!owner || !repo || !branch || !accessToken) {
-    return new Response(
-      JSON.stringify({ error: "Missing parameters or not authenticated" }),
-      { status: 400 },
-    );
+    return new Response(JSON.stringify({ error: "Missing parameters or not authenticated" }), { status: 400 });
   }
 
   const octokit = new Octokit({ auth: accessToken });
@@ -88,10 +85,7 @@ export const POST = async (req: Request, res: Response) => {
     });
 
     if (!treeData.tree) {
-      return new Response(
-        JSON.stringify({ error: "Could not retrieve file tree." }),
-        { status: 404 },
-      );
+      return new Response(JSON.stringify({ error: "Could not retrieve file tree." }), { status: 404 });
     }
 
     const relevantFiles = treeData.tree.filter((file: any) => {

@@ -7,12 +7,8 @@ interface AnalyzeRepoVariables {
   files: any;
 }
 
-const analyzeRepository = async ({
-  owner,
-  repo,
-  files,
-}: AnalyzeRepoVariables) => {
-  const { data } = await axios.post("/api/v1/repo/analyze", {
+const fetchFileContent = async ({ owner, repo, files }: AnalyzeRepoVariables) => {
+  const { data } = await axios.post("/api/v1/repo/files", {
     owner,
     repo,
     files,
@@ -20,10 +16,10 @@ const analyzeRepository = async ({
   return data;
 };
 
-export const useAnalysisQuery = (owner: string, repo: string, files: any) => {
+export const useFileContentsQuery = (owner: string, repo: string, files: any) => {
   return useQuery({
     queryKey: ["repoAnalysis", owner, repo, files],
-    queryFn: () => analyzeRepository({ owner, repo, files }),
+    queryFn: () => fetchFileContent({ owner, repo, files }),
     staleTime: 1000 * 60 * 5,
     enabled: !!owner && !!repo && !!files,
   });
