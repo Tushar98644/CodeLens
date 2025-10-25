@@ -1,5 +1,6 @@
 import { CheckCircle2, Circle, Loader2, XCircle } from "lucide-react";
 import type { AgentState } from "@/types/agent-state";
+import { cn } from "@/lib/utils";
 
 type Progress = AgentState["analysis_progress"][0];
 
@@ -25,34 +26,64 @@ const StatusIcon = ({ status }: { status: Progress["status"] }) => {
   return null;
 };
 
-const AnalysisProgressStep = ({ progress }: { progress: Progress }) => (
-  <div className="flex items-center gap-3 p-2.5 rounded-lg bg-black/3 border border-white/6 hover:bg-black/5 transition-colors">
-    <StatusIcon status={progress.status} />
-    <div className="flex-1 min-w-0">
-      <p className="text-sm font-medium text-white/90 capitalize">{progress.step.replace("_", " ")}</p>
-      <p className="text-xs text-white/40 truncate">{progress.message}</p>
-    </div>
-  </div>
-);
+const AnalysisProgressStep = ({ progress }: { progress: Progress }) => {
+  const isInProgress = progress.status === "in-progress";
 
-export function ProgressLoader({ isLoading, analysisProgress, fileCount }: AnalysisLoadingOverlayProps) {
+  return (
+    <div
+      className={cn(
+        "flex items-center gap-3 p-2.5 rounded-lg border transition-colors",
+        isInProgress
+          ? "bg-[#1C212D] border-blue-500/30"
+          : "bg-zinc-900 border-zinc-800",
+        "hover:bg-zinc-800/60"
+      )}
+    >
+      <StatusIcon status={progress.status} />
+      <div className="flex-1 min-w-0">
+        <p
+          className={cn(
+            "text-sm font-medium capitalize",
+            isInProgress ? "text-blue-400" : "text-neutral-200"
+          )}
+        >
+          {progress.step.replace("_", " ")}
+        </p>
+        <p className="text-xs text-neutral-400 truncate">{progress.message}</p>
+      </div>
+    </div>
+  );
+};
+
+export function ProgressLoader({
+  isLoading,
+  analysisProgress,
+  fileCount,
+}: AnalysisLoadingOverlayProps) {
   if (!isLoading) return null;
+
+  const showSpinner =
+    analysisProgress.length === 0 ||
+    analysisProgress.some((p) => p.status === "in-progress");
 
   return (
     <div className="absolute inset-0 bg-black/80 backdrop-blur-sm z-10 flex items-center justify-center p-4">
-      <div className="relative overflow-hidden rounded-2xl bg-zinc-950/60 backdrop-blur-2xl border border-white/8 shadow-[0_8px_32px_0_rgba(0,0,0,0.4)] max-w-md w-full">
-        {/* Subtle gradient mesh */}
-        <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full blur-3xl" />
-        <div className="absolute -bottom-24 -left-24 w-64 h-64 rounded-full blur-3xl" />
-
-        {/* Content */}
-        <div className="relative p-6 space-y-4">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="w-1.5 h-10 bg-black/10 rounded-full" />
+      <div className="rounded-2xl bg-zinc-950 border border-zinc-800 shadow-2xl shadow-black max-w-md w-full">
+        <div className="p-6 space-y-4">
+          <div className="flex items-center gap-3 mb-4">
+            {showSpinner ? (
+              <Loader2 className="h-6 w-6 text-blue-400 animate-spin shrink-0" />
+            ) : (
+              <CheckCircle2 className="h-6 w-6 text-emerald-400 shrink-0" />
+            )}
             <div>
-              <h3 className="text-lg font-semibold text-white/95">Analyzing Repository</h3>
-              <p className="text-sm text-white/50">
-                {analysisProgress?.length > 0 ? `Processing ${fileCount || 0} files...` : "Preparing analysis..."}
+              <h3 className="text-lg font-semibold text-neutral-100">
+                Analyzing Repository
+              </h3>
+              <p className="text-sm text-neutral-400">
+                {analysisProgress?.length > 0
+                  ? `Processing ${fileCount || 0} files...`
+                  : "Preparing analysis..."}
               </p>
             </div>
           </div>

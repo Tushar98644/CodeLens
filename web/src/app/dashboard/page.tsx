@@ -55,13 +55,13 @@ export default function GitHubIntegrationPage() {
   return (
     <div className="h-full w-full bg-black text-white p-4 md:p-8 flex flex-col">
       {/* --- Header --- */}
-      <header className="flex-shrink-0 pb-6 border-b border-zinc-800/60">
+      <header className="shrink-0 pb-6 border-b border-zinc-800/60">
         <h1 className="text-xl font-medium text-neutral-100">GitHub Repositories</h1>
         <p className="text-neutral-400 mt-1 text-sm">View and manage repositories connected to your GitHub account.</p>
       </header>
 
       {/* --- Toolbar with Search --- */}
-      <div className="flex-shrink-0 py-4">
+      <div className="shrink-0 py-4">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-500" />
           <Input
