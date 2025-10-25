@@ -1,11 +1,18 @@
-import Link from "next/link";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
-const LandingPage = () => {
+const LandingPage = async () => {
+  const session = await auth.api.getSession({
+    headers: await headers()
+  })
+
+  if (!session) {
+    redirect("/auth/sign-in")
+  }
+
   return (
-    <div>
-      sign in
-      <Link href="/auth/sign-in">sign in</Link>
-    </div>
+    redirect('/dashboard')
   );
 };
 

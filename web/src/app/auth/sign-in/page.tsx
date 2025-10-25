@@ -3,8 +3,19 @@ import Link from "next/link";
 import { Icons } from "@/features/global/icons";
 import { SignInForm } from "@/features/auth/signin-form";
 import { Spinner } from "@/components/ui/spinner";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
-const SignInPage = () => {
+const SignInPage = async () => {
+  const session = await auth.api.getSession({
+    headers: await headers()
+  })
+
+  if (session) {
+    redirect("/dashboard")
+  }
+
   return (
     <div className="flex min-h-dvh flex-col items-center justify-center p-4">
       <div className="flex w-full max-w-sm flex-col items-center">

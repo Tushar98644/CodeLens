@@ -18,6 +18,7 @@ export const GET = async (req: Request, res: Response) => {
   try {
     const octokit = new Octokit({ auth: accessToken });
     const { data: repos } = await octokit.rest.repos.listForAuthenticatedUser({
+      type: 'all',
       per_page: 100,
       sort: "updated",
       direction: "desc",

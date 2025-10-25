@@ -35,7 +35,7 @@ const SideBar = () => {
   return (
     <div className="h-full border-r border-zinc-800/60 flex flex-col bg-white dark:bg-black">
       {/* Header section */}
-      <div className="h-20 flex-shrink-0 px-4 flex items-center justify-center md:justify-start md:px-6 gap-3">
+      <div className="h-20 shrink-0 px-4 flex items-center justify-center md:justify-start md:px-6 gap-3">
         <Icons.logo className="h-7 w-7 text-blue-500 dark:text-blue-400 hover:animate-pulse" />
         <span className="text-lg font-semibold hidden md:inline text-neutral-800 dark:text-neutral-100">Code Lens</span>
       </div>
