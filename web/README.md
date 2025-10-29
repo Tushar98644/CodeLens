@@ -10,8 +10,14 @@ To get the web application running locally, follow these steps:
    ```bash
    bun install
    ```
-
-2. **Run the development server:**
+2.  **Set up environment variables:**
+   -   Create a `.env` file by copying the `.env.example`:
+      ```bash
+      cp .env.example .env
+      ```
+   -   Update the `.env` file with your credentials.
+    
+3. **Run the development server:**
    ```bash
    bun run dev
    ```
