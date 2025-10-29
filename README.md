@@ -1,5 +1,7 @@
 # Code Lens
 
+<img width="1440" height="811" alt="Screenshot 2025-10-29 at 12 57 54 PM" src="https://github.com/user-attachments/assets/60d50836-7eda-4656-b900-6051eb4e951f" /><br/>
+
 Code Lens is a tool to visualize and understand codebases. It's composed of two main parts: a web interface and an agent.
 
 - [Web](./web/README.md): The frontend application for visualizing the code.
